@@ -18,7 +18,7 @@
 
 <div align="center">
     <a href="https://github.com/YousefIbrahimismail" target="_blank">
-        <img src="https://user-images.githubusercontent.com/59213365/197888886-4de4b57c-e537-4a1d-94a0-937a4d1a136a.png](https://redeinnov.pt/wp-content/uploads/2016/10/logo.png" 
+        <img src="https://redeinnov.pt/wp-content/uploads/2016/10/logo.png" 
         alt="Logo" width="290" height="290">
     </a>
 </div>
