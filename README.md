@@ -18,7 +18,7 @@
 
 <div align="center">
     <a href="https://github.com/YousefIbrahimismail" target="_blank">
-        <img src="https://redeinnov.pt/wp-content/uploads/2016/10/logo.png" 
+        <img src="https://tisoauto.pt/pt/wp-content/uploads/2015/11/Logo-Redeinnov@2x.jpg" 
         alt="Logo" width="290" height="290">
     </a>
 </div>
@@ -57,4 +57,4 @@ Projeto Catalogo
 
 
 <!-- - Use this html element to create a back to top button. -->
-<p align="right"><a href="#how-to-use-this-project">back to top ⬆️</a></p>
+<p align="right"><a href="https://redeinnovri.github.io/catalogo/template/motul_listagem_artigos">Ver Catalogo &#8594;</a></p>
