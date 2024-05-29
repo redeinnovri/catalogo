@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	function populateFilters(products) {
 		const gamas = [...new Set(products.map(p => p.Gama))].sort();
 		const viscosidades = [...new Set(products.map(p => p.ViscosidadeSAE))].sort();
-		const aceas = [...new Set(products.map(p => p.EspecificacaoACEA))].sort();
+		const aceas = [...new Set(products.flatMap(p => (p.EspecificacaoACEA ? p.EspecificacaoACEA.split('; ') : [])))].sort();
 
 		populateFilterOptions(filterGama, gamas);
 		populateFilterOptions(filterViscosidade, viscosidades);
@@ -61,8 +61,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="card">
                         <div class="product-box">
                             <div class="product-img">
-                                <img class="img-fluid" src="${product.imgUrl || 'default.jpg'}" alt="${product.DesignacaoComercial}" />
+                                <img class="img-fluid" src="${product.imgUrl || 'https://cdn3d.iconscout.com/3d/premium/thumb/oil-can-10205168-8317526.png'}" alt="${product.DesignacaoComercial}" />
                             </div>
+                            <div class="user-profile">
+													<div class="hovercard">
+														<div class="user-image">
+															<ul class="share-icons" style="right: 0px; top: -40px">
+																<li>
+																	<button class="social-icon bg-primary" style="width: 30px; height: 30px" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+																		<i class="icon-plus" style="font-size: 15px"></i>
+																	</button>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
                             <div class="product-details text-center">
                                 <div class="blog-details-main" style="min-height: 40px; align-content: center">
                                     <h6 class="blog-bottom-details mb-0">${product.DesignacaoComercial}</h6>
@@ -75,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </li>
                                 <li class="list-group-item d-flex align-items-start flex-wrap">
                                     <div class="ms-2 me-auto">ACEA</div>
-                                    <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.EspecificacaoACEA}</span>
+                                    <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.EspecificacaoACEA || ''}</span>
                                 </li>
                             </ul>
                         </div>
@@ -97,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			const matchesSearch = product.DesignacaoComercial.toLowerCase().includes(searchTerm) || product.Descricao.toLowerCase().includes(searchTerm);
 			const matchesGama = selectedGama ? product.Gama === selectedGama : true;
 			const matchesViscosidade = selectedViscosidade ? product.ViscosidadeSAE === selectedViscosidade : true;
-			const matchesAcea = selectedAcea ? product.EspecificacaoACEA.includes(selectedAcea) : true;
+			const matchesAcea = selectedAcea ? (product.EspecificacaoACEA || '').includes(selectedAcea) : true;
 
 			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea;
 		});
