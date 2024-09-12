@@ -1,3 +1,15 @@
+$(document).ready(function () {
+	$('#filter-marca').select2({
+		placeholder: 'Todas as Marcas',
+		allowClear: true,
+	});
+
+	$('#filter-aprovacao').select2({
+		placeholder: 'Aprovações Fabricante',
+		allowClear: true,
+	});
+});
+
 document.addEventListener('DOMContentLoaded', () => {
 	const searchBar = document.getElementById('search-bar');
 	const filterGama = document.getElementById('filter-gama');
@@ -83,9 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="card">
                         <div class="product-box">
                             <div class="product-img" style="text-align: center; text-align: -webkit-center">
-                                <img class="img-fluid" src="${product.imgUrl || 'https://cdn3d.iconscout.com/3d/premium/thumb/oil-can-10205168-8317526.png'}" alt="${
-					product.DesignacaoComercial
-				}" style="height: 250px" />
+                                <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif'}" alt="${product.DesignacaoComercial}" style="height: 250px" />
                             </div>
                             <div class="user-profile">
                                 <div class="hovercard">
@@ -131,19 +141,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		const selectedGama = filterGama.value;
 		const selectedViscosidade = filterViscosidade.value;
 		const selectedAcea = filterAcea.value;
-		const selectedMarca = filterMarca.value;
-		const selectedAprovacao = filterAprovacao.value;
+		const selectedMarcas = Array.from(filterMarca.selectedOptions).map(option => option.value); // Seleção múltipla de marcas
+		const selectedAprovacoes = Array.from(filterAprovacao.selectedOptions).map(option => option.value); // Seleção múltipla de aprovações
 
 		const filteredProducts = products.filter(product => {
 			const matchesSearch = product.DesignacaoComercial.toLowerCase().includes(searchTerm) || product.Descricao.toLowerCase().includes(searchTerm);
 			const matchesGama = selectedGama ? product.Gama === selectedGama : true;
 			const matchesViscosidade = selectedViscosidade ? product.ViscosidadeSAE === selectedViscosidade : true;
 			const matchesAcea = selectedAcea ? (product.EspecificacaoACEA || '').includes(selectedAcea) : true;
-			const matchesMarca = selectedMarca ? product.Marca === selectedMarca : true;
-			// const matchesAprovacao = selectedAprovacao ? product.AprovacaoFabricante === selectedAprovacao : true;
-			const matchesAprovacao = selectedAprovacao ? (product.AprovacaoFabricante || '').includes(selectedAprovacao) : true;
+			const matchesMarcas = selectedMarcas.length > 0 ? selectedMarcas.includes(product.Marca) : true;
+			const matchesAprovacoes = selectedAprovacoes.length > 0 ? selectedAprovacoes.some(aprov => (product.AprovacaoFabricante || '').includes(aprov)) : true;
 
-			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea && matchesMarca && matchesAprovacao;
+			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea && matchesMarcas && matchesAprovacoes;
 		});
 
 		displayProducts(filteredProducts);
@@ -220,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		modalSEA.innerHTML = `SAE: ${product.ViscosidadeSAE || ''}`;
 		modalEspec.innerHTML = `Especificação: ${product.Especificacao || ''}`;
 		modalAprov.innerHTML = `Aprovação Fabricante: ${product.AprovacaoFabricante || ''}`;
-		modalImage.src = product.imgUrl || 'https://cdn3d.iconscout.com/3d/premium/thumb/oil-can-10205168-8317526.png';
+		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
 		modalImage.alt = product.DesignacaoComercial;
 
 		// Adiciona event listener para copiar o conteúdo de modalPrice

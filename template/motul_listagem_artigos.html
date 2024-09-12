@@ -30,6 +30,8 @@
 		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/animate.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/echart.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/date-picker.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/intltelinput.min.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/tagify.css" />
 		<!-- Plugins css Ends-->
 		<!-- Bootstrap css-->
 		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css" />
@@ -38,6 +40,9 @@
 		<link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen" />
 		<!-- Responsive css-->
 		<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css" />
+		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	</head>
 	<body>
 		<!-- loader starts-->
@@ -532,7 +537,9 @@
 												</svg>
 											</a>
 										</li>
-										<li class="breadcrumb-item">Links úteis</li>
+										<li class="breadcrumb-item">
+											<a href="links_uteis.html">Links úteis</a>
+										</li>
 									</ol>
 								</div>
 							</div>
@@ -542,6 +549,19 @@
 					<div class="container-fluid product-wrapper">
 						<div class="product-grid">
 							<div class="row">
+								<div class="col-sm-6">
+									<div class="card">
+										<div class="card-header">
+											<h4>Random suggestions</h4>
+											<p class="f-m-light mt-1">Use the tagify plugin for select options.</p>
+										</div>
+										<div class="card-body">
+											<form>
+												<input class="some_class_name" name="input-custom-dropdown" placeholder="write some tags" value="tivo, roxo, sheltos, viho, zeta, koho" />
+											</form>
+										</div>
+									</div>
+								</div>
 								<div class="col-sm-12">
 									<div class="card" style="padding: 0 !important">
 										<div class="card-body" style="padding: 0 !important">
@@ -587,12 +607,12 @@
 																</select>
 															</div>
 															<div class="col">
-																<select class="form-select" id="filter-marca">
+																<select class="form-select" id="filter-marca" multiple>
 																	<option value="">Todas as Marcas</option>
 																</select>
 															</div>
 															<div class="col">
-																<select class="form-select" id="filter-aprovacao">
+																<select class="form-select" id="filter-aprovacao" multiple>
 																	<option value="">Aprovações Fabricante</option>
 																</select>
 															</div>
@@ -631,10 +651,13 @@
 										</div>
 										<div class="product-details col-lg-6 text-start">
 											<!-- <h4 class="modal-title">Woman T-shirt</h4> -->
-											<button id="copy-price-btn" class="btn btn-outline-secondary btn-sm">Copiar</button>
-											<div class="product-price">
-												<!-- Preço será atualizado aqui -->
+											<div class="row flex col-12">
+												<i class="fa fa-copy col-1" id="copy-price-btn" style="align-content: center; cursor: pointer"></i>
+												<div class="product-price col-9">
+													<!-- Preço será atualizado aqui -->
+												</div>
 											</div>
+
 											<div class="product-view">
 												<h6 class="f-w-600"></h6>
 												<p class="mb-1 acea"></p>
@@ -645,8 +668,16 @@
 											<div class="modal-body" style="padding: 10px 0px 10px 0px"></div>
 											<div class="product-qnty">
 												<div class="addcart-btn">
-													<a class="btn btn-primary" href="cart.html">Carrinho</a
-													><a class="btn btn-primary ms-2" href="https://azupim01.motul.com/media/motulData/DO/base/8100_eco-nergy_5w30_pt_pt_motul_20191202.pdf" target="_blank">Ficha Técnina</a>
+													<button
+														class="example-popover btn btn-primary mb-0 me-0"
+														type="button"
+														data-container="body"
+														data-bs-toggle="tooltip"
+														data-bs-placement="top"
+														title="Aqui aparece imagem a explicar!"
+													>
+														?</button
+													><a class="btn btn-primary ms-2" href="https://www.motul.com/pt-PT/lubricants" target="_blank">Ficha Técnina/Segurança</a>
 												</div>
 											</div>
 										</div>
@@ -763,6 +794,14 @@
 		<script src="../assets/js/datepicker/date-picker/datepicker.custom.js"></script>
 		<script src="../assets/js/dashboard/dashboard_3.js"></script>
 		<script src="../assets/js/product-tab.js"></script>
+		<script src="../assets/js/tooltip-init.js"></script>
+		<script src="../assets/js/select2/tagify.js"></script>
+		<script src="../assets/js/select2/tagify.polyfills.min.js"></script>
+		<script src="../assets/js/select2/intltelinput.min.js"></script>
+		<script src="../assets/js/select2/telephone-input.js"></script>
+		<script src="../assets/js/select2/custom-inputsearch.js"></script>
+		<script src="../assets/js/select2/select3-custom.js"></script>
+		<script src="../assets/js/height-equal.js"></script>
 		<!-- Plugins JS Ends-->
 		<!-- Theme js-->
 		<script src="../assets/js/script.js"></script>
