@@ -548,89 +548,91 @@
 					<!-- Container-fluid starts-->
 					<div class="container-fluid product-wrapper">
 						<div class="product-grid">
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="card">
-										<div class="card-header">
-											<h4>Random suggestions</h4>
-											<p class="f-m-light mt-1">Use the tagify plugin for select options.</p>
-										</div>
-										<div class="card-body">
-											<form>
-												<input class="some_class_name" name="input-custom-dropdown" placeholder="write some tags" value="tivo, roxo, sheltos, viho, zeta, koho" />
-											</form>
+							<!-- Linha para a barra de pesquisa e o botão de reset -->
+							<div class="row mb-1">
+								<div class="col-md-8">
+									<input class="form-control" id="search-bar" type="search" placeholder="Procurar por descrição de produto..." />
+								</div>
+								<div class="col-md-4">
+									<button id="reset-filters" class="btn w-100">Limpar Filtros</button>
+								</div>
+							</div>
+
+							<!-- Filtros -->
+							<div id="filters" class="row mb-3">
+								<!-- Filtro de Marca -->
+								<div class="col-md-2">
+									<div class="dropdown">
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="marcaDropdown" data-bs-toggle="dropdown" aria-expanded="false">Marca</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="marcaDropdown">
+											<input type="text" id="marcaSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-marca" class="checkbox-list">
+												<!-- Checkboxes de marca serão populados aqui -->
+											</div>
 										</div>
 									</div>
 								</div>
-								<div class="col-sm-12">
-									<div class="card" style="padding: 0 !important">
-										<div class="card-body" style="padding: 0 !important">
-											<div class="col-md-12">
-												<div class="feature-products row">
-													<div class="col-md-10 col-sm-9">
-														<form>
-															<div class="form-group m-0">
-																<input
-																	class="form-control"
-																	id="search-bar"
-																	style="margin-bottom: 0 !important"
-																	type="search"
-																	placeholder="Procurar por descrição de produto..."
-																	data-original-title=""
-																	title=""
-																/><i class="fa fa-search"></i>
-															</div>
-														</form>
-													</div>
-													<div class="col-md-2 col-sm-9 light-box" style="align-content: center">
-														<a data-bs-toggle="collapse" href="#collapseProduct" role="button" aria-expanded="false" aria-controls="collapseProduct">
-															<i class="filter-icon show" data-feather="filter"></i><i class="icon-close filter-close hide"></i>
-														</a>
-													</div>
-												</div>
-												<div class="collapse" id="collapseProduct">
-													<div class="list-product-body">
-														<div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-2 g-3">
-															<div class="col">
-																<select class="form-select" id="filter-gama">
-																	<option value="">Gama</option>
-																</select>
-															</div>
-															<div class="col">
-																<select class="form-select" id="filter-viscosidade">
-																	<option value="">Viscosidade SAE</option>
-																</select>
-															</div>
-															<div class="col">
-																<select class="form-select" id="filter-acea">
-																	<option value="">Especificacao ACEA</option>
-																</select>
-															</div>
-															<div class="col">
-																<select class="form-select" id="filter-marca" multiple>
-																	<option value="">Todas as Marcas</option>
-																</select>
-															</div>
-															<div class="col">
-																<select class="form-select" id="filter-aprovacao" multiple>
-																	<option value="">Aprovações Fabricante</option>
-																</select>
-															</div>
-															<div class="col">
-																<button id="reset-filters" class="btn btn-primary">Limpar filtros</button>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div id="no-results" class="text-center my-3" style="display: none">Sem resultados encontrados, tente outra pesquisa...</div>
+
+								<!-- Filtro de Gama -->
+								<div class="col-md-3">
+									<div class="dropdown">
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="gamaDropdown" data-bs-toggle="dropdown" aria-expanded="false">Gama</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="gamaDropdown">
+											<input type="text" id="gamaSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-gama" class="checkbox-list">
+												<!-- Checkboxes de gama serão populados aqui -->
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Filtro de Viscosidade -->
+								<div class="col-md-2">
+									<div class="dropdown">
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="viscosidadeDropdown" data-bs-toggle="dropdown" aria-expanded="false">Viscosidade</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="viscosidadeDropdown">
+											<input type="text" id="viscosidadeSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-viscosidade" class="checkbox-list">
+												<!-- Checkboxes de viscosidade serão populados aqui -->
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Filtro de ACEA -->
+								<div class="col-md-2">
+									<div class="dropdown">
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="aceaDropdown" data-bs-toggle="dropdown" aria-expanded="false">ACEA</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="aceaDropdown">
+											<input type="text" id="aceaSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-acea" class="checkbox-list">
+												<!-- Checkboxes de ACEA serão populados aqui -->
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Filtro de Aprovação Fabricante -->
+								<div class="col-md-3">
+									<div class="dropdown">
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="aprovacaoDropdown" data-bs-toggle="dropdown" aria-expanded="false">Aprovação</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="aprovacaoDropdown">
+											<input type="text" id="aprovacaoSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-aprovacao" class="checkbox-list">
+												<!-- Checkboxes de aprovação serão populados aqui -->
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
+
+							<!-- Mensagem de nenhum resultado encontrado -->
+							<div id="no-results" class="text-center my-3" style="display: none">Sem resultados encontrados, tente outra pesquisa...</div>
+
+							<!-- Grid de produtos -->
 							<div class="product-wrapper-grid">
 								<div class="row" id="product-grid">
-									<!-- Cards will be inserted here dynamically -->
+									<!-- Os cards dos produtos serão inseridos aqui dinamicamente -->
 								</div>
 							</div>
 						</div>
@@ -677,7 +679,7 @@
 														title="Aqui aparece imagem a explicar!"
 													>
 														?</button
-													><a class="btn btn-primary ms-2" href="https://www.motul.com/pt-PT/products" target="_blank">Ficha Técnina/Segurança</a>
+													><a class="btn btn-primary ms-2" href="https://www.motul.com/pt-PT/lubricants" target="_blank">Ficha Técnina/Segurança</a>
 												</div>
 											</div>
 										</div>
@@ -761,8 +763,10 @@
 				</footer>
 			</div>
 		</div>
+
 		<!-- latest jquery-->
 		<script src="../assets/js/jquery.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<!-- Bootstrap js-->
 		<script src="../assets/js/bootstrap/bootstrap.bundle.min.js"></script>
 		<!-- feather icon js-->
@@ -803,6 +807,7 @@
 		<script src="../assets/js/select2/select3-custom.js"></script>
 		<script src="../assets/js/height-equal.js"></script>
 		<!-- Plugins JS Ends-->
+
 		<!-- Theme js-->
 		<script src="../assets/js/script.js"></script>
 		<script src="../assets/js/motul.js"></script>

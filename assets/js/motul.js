@@ -1,15 +1,3 @@
-$(document).ready(function () {
-	$('#filter-marca').select2({
-		placeholder: 'Todas as Marcas',
-		allowClear: true,
-	});
-
-	$('#filter-aprovacao').select2({
-		placeholder: 'Aprovações Fabricante',
-		allowClear: true,
-	});
-});
-
 document.addEventListener('DOMContentLoaded', () => {
 	const searchBar = document.getElementById('search-bar');
 	const filterGama = document.getElementById('filter-gama');
@@ -25,72 +13,115 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Fetch JSON data
 	fetch('https://ruifgcosta.github.io/ecommerceapi/motulapi.json')
-		.then(response => {
-			if (!response.ok) {
-				throw new Error('Network response was not ok ' + response.statusText);
-			}
-			return response.json();
-		})
+		.then(response => response.json())
 		.then(data => {
 			products = data;
-			console.log('Products loaded:', products);
 			populateFilters(products);
-			displayProducts(products);
+			displayGroupedProducts(products);
 		})
-		.catch(error => {
-			console.error('There was a problem with the fetch operation:', error);
-		});
+		.catch(error => console.error('Erro ao carregar produtos:', error));
 
-	// Agrupar produtos por DesignacaoComercial
-	function groupByDesignation(products) {
-		const groupedProducts = products.reduce((acc, product) => {
-			const { DesignacaoComercial } = product;
-			if (!acc[DesignacaoComercial]) {
-				acc[DesignacaoComercial] = [];
-			}
-			acc[DesignacaoComercial].push(product);
-			return acc;
-		}, {});
-		return Object.values(groupedProducts);
-	}
-
-	// Populate filter dropdowns
+	// Popula os filtros com checkboxes
 	function populateFilters(products) {
 		const gamas = [...new Set(products.map(p => p.Gama))].sort();
 		const viscosidades = [...new Set(products.map(p => p.ViscosidadeSAE))].sort();
 		const aceas = [...new Set(products.flatMap(p => (p.EspecificacaoACEA ? p.EspecificacaoACEA.split('; ') : [])))].sort();
 		const marcas = [...new Set(products.map(p => p.Marca))].sort();
-		// const aprovacoes = [...new Set(products.map(p => p.AprovacaoFabricante))].sort();
-		const aprovacoes = [...new Set(products.flatMap(p => (p.AprovacaoFabricante ? p.AprovacaoFabricante.split(';') : [])))].sort();
 
-		populateFilterOptions(filterGama, gamas);
-		populateFilterOptions(filterViscosidade, viscosidades);
-		populateFilterOptions(filterAcea, aceas);
-		populateFilterOptions(filterMarca, marcas);
-		populateFilterOptions(filterAprovacao, aprovacoes);
+		// Combina as opções de AprovacaoFabricante e RecomendacaoFabricanteOleo, removendo duplicatas
+		const aprovacoes = [
+			...new Set(
+				products.flatMap(p => {
+					const aprovacaoFabricante = p.AprovacaoFabricante ? p.AprovacaoFabricante.split(';') : [];
+					const recomendacaoFabricanteOleo = p.RecomendacaoFrabricanteOleo ? p.RecomendacaoFrabricanteOleo.split(';') : [];
+					return [...aprovacaoFabricante, ...recomendacaoFabricanteOleo];
+				}),
+			),
+		].sort();
+
+		populateDropdown(filterGama, gamas, 'gamaSearch');
+		populateDropdown(filterViscosidade, viscosidades, 'viscosidadeSearch');
+		populateDropdown(filterAcea, aceas, 'aceaSearch');
+		populateDropdown(filterMarca, marcas, 'marcaSearch');
+		populateDropdown(filterAprovacao, aprovacoes, 'aprovacaoSearch');
 	}
 
-	function populateFilterOptions(filter, options) {
+	function populateDropdown(container, options, inputId) {
 		options.forEach(option => {
-			const opt = document.createElement('option');
-			opt.value = option;
-			opt.textContent = option;
-			filter.appendChild(opt);
+			const checkbox = document.createElement('input');
+			checkbox.type = 'checkbox';
+			checkbox.value = option;
+			checkbox.addEventListener('change', filterAndSearch);
+			checkbox.classList.add('form-check-input');
+
+			const label = document.createElement('label');
+			label.textContent = option;
+			label.classList.add('form-check-label'); // Adiciona classe para facilitar o styling
+
+			const div = document.createElement('div');
+			div.classList.add('form-check', 'filter-option'); // Classe adicional para a estilização
+
+			// Adiciona evento na div para marcar/desmarcar o checkbox quando clicar
+			div.addEventListener('click', () => {
+				checkbox.checked = !checkbox.checked; // Alterna entre marcado e desmarcado
+				checkbox.dispatchEvent(new Event('change')); // Dispara o evento de change manualmente
+			});
+
+			div.appendChild(checkbox);
+			div.appendChild(label);
+			container.appendChild(div);
 		});
+
+		// Adiciona o evento de filtragem para o input de busca
+		setupFilterCheckboxes(inputId, container);
 	}
 
-	// Display products
-	function displayProducts(products) {
+	// Função de filtragem e pesquisa
+	function filterAndSearch() {
+		const searchTerm = searchBar?.value?.toLowerCase() || '';
+		const selectedGamas = getSelectedCheckboxes(filterGama);
+		const selectedViscosidades = getSelectedCheckboxes(filterViscosidade);
+		const selectedAceas = getSelectedCheckboxes(filterAcea);
+		const selectedMarcas = getSelectedCheckboxes(filterMarca);
+		const selectedAprovacoes = getSelectedCheckboxes(filterAprovacao);
+
+		const filteredProducts = products.filter(product => {
+			const matchesSearch = product.DesignacaoComercial.toLowerCase().includes(searchTerm) || product.Descricao.toLowerCase().includes(searchTerm);
+			const matchesGama = selectedGamas.length > 0 ? selectedGamas.includes(product.Gama) : true;
+			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.includes(product.ViscosidadeSAE) : true;
+			const matchesAcea = selectedAceas.length > 0 ? selectedAceas.some(acea => (product.EspecificacaoACEA || '').includes(acea)) : true;
+			const matchesMarcas = selectedMarcas.length > 0 ? selectedMarcas.includes(product.Marca) : true;
+			const matchesAprovacoes = selectedAprovacoes.length > 0 ? selectedAprovacoes.some(aprov => (product.AprovacaoFabricante || '').includes(aprov)) : true;
+
+			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea && matchesMarcas && matchesAprovacoes;
+		});
+
+		displayGroupedProducts(filteredProducts);
+	}
+
+	function getSelectedCheckboxes(container) {
+		const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
+		return Array.from(checkboxes).map(checkbox => checkbox.value);
+	}
+
+	// Função para agrupar e exibir os produtos
+	function displayGroupedProducts(products) {
 		productGrid.innerHTML = '';
-		if (products.length === 0) {
+
+		// Agrupar produtos por DesignacaoComercial
+		const groupedProducts = groupBy(products, 'DesignacaoComercial');
+
+		if (Object.keys(groupedProducts).length === 0) {
 			noResults.style.display = 'block';
 		} else {
 			noResults.style.display = 'none';
-			const groupedProducts = groupByDesignation(products);
-			groupedProducts.forEach(group => {
-				const product = group[0]; // Utilize o primeiro produto do grupo para o card
+			for (const [designacaoComercial, group] of Object.entries(groupedProducts)) {
+				const product = group[0]; // Usa o primeiro produto do grupo para exibir
+
 				const productCard = document.createElement('div');
 				productCard.className = 'col-xl-3 col-sm-12';
+
+				// Card original com visual restaurado
 				productCard.innerHTML = `
                     <div class="card">
                         <div class="product-box">
@@ -128,54 +159,52 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </li>
                             </ul>
                         </div>
-                    </div>
-                `;
+                    </div>`;
+
 				productGrid.appendChild(productCard);
-			});
+			}
 		}
 	}
 
-	// Filter and search functionality
-	function filterAndSearch() {
-		const searchTerm = searchBar.value.toLowerCase();
-		const selectedGama = filterGama.value;
-		const selectedViscosidade = filterViscosidade.value;
-		const selectedAcea = filterAcea.value;
-		const selectedMarcas = Array.from(filterMarca.selectedOptions).map(option => option.value); // Seleção múltipla de marcas
-		const selectedAprovacoes = Array.from(filterAprovacao.selectedOptions).map(option => option.value); // Seleção múltipla de aprovações
-
-		const filteredProducts = products.filter(product => {
-			const matchesSearch = product.DesignacaoComercial.toLowerCase().includes(searchTerm) || product.Descricao.toLowerCase().includes(searchTerm);
-			const matchesGama = selectedGama ? product.Gama === selectedGama : true;
-			const matchesViscosidade = selectedViscosidade ? product.ViscosidadeSAE === selectedViscosidade : true;
-			const matchesAcea = selectedAcea ? (product.EspecificacaoACEA || '').includes(selectedAcea) : true;
-			const matchesMarcas = selectedMarcas.length > 0 ? selectedMarcas.includes(product.Marca) : true;
-			const matchesAprovacoes = selectedAprovacoes.length > 0 ? selectedAprovacoes.some(aprov => (product.AprovacaoFabricante || '').includes(aprov)) : true;
-
-			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea && matchesMarcas && matchesAprovacoes;
-		});
-
-		displayProducts(filteredProducts);
+	// Função para agrupar objetos por propriedade
+	function groupBy(arr, prop) {
+		return arr.reduce((acc, obj) => {
+			const key = obj[prop];
+			if (!acc[key]) {
+				acc[key] = [];
+			}
+			acc[key].push(obj);
+			return acc;
+		}, {});
 	}
 
-	// Event listeners
-	searchBar.addEventListener('input', filterAndSearch);
-	filterGama.addEventListener('change', filterAndSearch);
-	filterViscosidade.addEventListener('change', filterAndSearch);
-	filterAcea.addEventListener('change', filterAndSearch);
-	filterMarca.addEventListener('change', filterAndSearch);
-	filterAprovacao.addEventListener('change', filterAndSearch);
+	// Reseta os filtros
 	resetFilters.addEventListener('click', () => {
-		searchBar.value = '';
-		filterGama.value = '';
-		filterViscosidade.value = '';
-		filterAcea.value = '';
-		filterMarca.value = '';
-		filterAprovacao.value = '';
-		displayProducts(products);
+		const searchbar = document.getElementById('search-bar');
+		const checkboxes = document.querySelectorAll('#filters input[type="checkbox"]');
+		const inputquery = document.querySelectorAll('#filters input[type="text"]');
+		// Obtém os containers dos filtros
+		const gamaFilter = document.getElementById('filter-gama');
+		const viscosidadeFilter = document.getElementById('filter-viscosidade');
+		const aceaFilter = document.getElementById('filter-acea');
+		const marcaFilter = document.getElementById('filter-marca');
+		const aprovacaoFilter = document.getElementById('filter-aprovacao');
+
+		// Limpa o conteúdo anterior dos filtros para evitar duplicações
+		gamaFilter.innerHTML = '';
+		viscosidadeFilter.innerHTML = '';
+		aceaFilter.innerHTML = '';
+		marcaFilter.innerHTML = '';
+		aprovacaoFilter.innerHTML = '';
+
+		checkboxes.forEach(checkbox => (checkbox.checked = false));
+		inputquery.forEach(input => (input.value = ''));
+		searchbar.value = '';
+		populateFilters(products);
+		displayGroupedProducts(products);
 	});
 
-	// Modal update functionality
+	// Atualiza o modal com os detalhes do grupo de produtos
 	const exampleModalCenter = document.getElementById('exampleModalCenter');
 	exampleModalCenter.addEventListener('show.bs.modal', event => {
 		const button = event.relatedTarget;
@@ -183,16 +212,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		const modalTitle = exampleModalCenter.querySelector('.modal-title');
 		const modalBody = exampleModalCenter.querySelector('.modal-body');
-		const modalPrice = exampleModalCenter.querySelector('.product-price');
-		const modalImage = exampleModalCenter.querySelector('.product-img img');
-		const modalDescricao = exampleModalCenter.querySelector('.f-w-600');
-		const modalACEA = exampleModalCenter.querySelector('.acea');
-		const modalSEA = exampleModalCenter.querySelector('.sea');
 
 		modalTitle.textContent = group[0].DesignacaoComercial;
 		modalBody.innerHTML = ``;
 
-		// Sort group by Capacidade (ascending)
+		// Ordena o grupo por Capacidade (ascendente)
 		group.sort((a, b) => parseFloat(a.Capacidade) - parseFloat(b.Capacidade));
 
 		group.forEach(product => {
@@ -207,53 +231,55 @@ document.addEventListener('DOMContentLoaded', () => {
 			modalBody.appendChild(button);
 		});
 
-		// Automatically select and display the product with the lowest Capacidade
+		// Seleciona e exibe automaticamente o produto com a menor Capacidade
 		const lowestCapacityProduct = group[0];
 		populateModal(lowestCapacityProduct);
-		highlightButton(modalBody.querySelector('button'));
+		const firstButton = modalBody.querySelector('button');
+		highlightButton(firstButton);
 	});
 
-	function populateModal(product) {
-		const modalPrice = exampleModalCenter.querySelector('.product-price');
-		const modalImage = exampleModalCenter.querySelector('.product-img img');
-		const modalDescricao = exampleModalCenter.querySelector('.f-w-600');
-		const modalACEA = exampleModalCenter.querySelector('.acea');
-		const modalSEA = exampleModalCenter.querySelector('.sea');
-		const modalEspec = exampleModalCenter.querySelector('.especificacao');
-		const modalAprov = exampleModalCenter.querySelector('.aprovacao');
-		const copyPriceBtn = exampleModalCenter.querySelector('#copy-price-btn');
-
-		modalPrice.innerHTML = `${product.Referencia}`;
-		modalDescricao.innerHTML = `${product.Descricao}`;
-		modalACEA.innerHTML = `ACEA: ${product.EspecificacaoACEA || ''}`;
-		modalSEA.innerHTML = `SAE: ${product.ViscosidadeSAE || ''}`;
-		modalEspec.innerHTML = `Especificação: ${product.Especificacao || ''}`;
-		modalAprov.innerHTML = `Aprovação Fabricante: ${product.AprovacaoFabricante || ''}`;
-		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
-		modalImage.alt = product.DesignacaoComercial;
-
-		// Adiciona event listener para copiar o conteúdo de modalPrice
-		copyPriceBtn.addEventListener('click', () => {
-			navigator.clipboard
-				.writeText(modalPrice.textContent)
-				.then(() => {
-					// Sucesso ao copiar
-					console.log('Preço copiado com sucesso!');
-				})
-				.catch(err => {
-					// Falha ao copiar
-					console.error('Erro ao copiar o preço: ', err);
-				});
-		});
-	}
-
+	// Realça o botão ativo
 	function highlightButton(button) {
-		const buttons = button.parentElement.querySelectorAll('button');
-		buttons.forEach(btn => {
-			btn.classList.remove('btn-primary');
-			btn.classList.add('btn-outline-primary');
-		});
-		button.classList.remove('btn-outline-primary');
-		button.classList.add('btn-primary');
+		const buttons = button.parentNode.querySelectorAll('button');
+		buttons.forEach(btn => btn.classList.remove('active'));
+		button.classList.add('active');
 	}
+
+	// Exibe os detalhes do produto no modal
+	function populateModal(product) {
+		const modalImage = exampleModalCenter.querySelector('.modal-image img');
+		const modalDetails = exampleModalCenter.querySelector('.modal-details');
+		const modalAcea = exampleModalCenter.querySelector('#modal-acea');
+		const modalAprovacao = exampleModalCenter.querySelector('#modal-aprovacao');
+		const modalDescricao = exampleModalCenter.querySelector('#modal-descricao');
+
+		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
+		modalAcea.textContent = product.EspecificacaoACEA || 'N/A';
+		modalAprovacao.textContent = product.AprovacaoFabricante || 'N/A';
+		modalDescricao.textContent = product.Descricao || 'N/A';
+	}
+
+	// Função para configurar a pesquisa nos checkboxes
+	function setupFilterCheckboxes(inputId, filterContainer) {
+		const input = document.getElementById(inputId);
+		input.addEventListener('input', () => {
+			const filter = input.value.toLowerCase();
+			const checkboxes = filterContainer.querySelectorAll('div');
+
+			checkboxes.forEach(checkbox => {
+				const label = checkbox.querySelector('label').textContent.toLowerCase();
+				checkbox.style.display = label.includes(filter) ? '' : 'none';
+			});
+		});
+	}
+
+	// Filtro por barra de pesquisa principal
+	searchBar.addEventListener('input', filterAndSearch);
+});
+
+// Impede o dropdown de fechar ao clicar numa checkbox
+document.querySelectorAll('.dropdown-menu').forEach(menu => {
+	menu.addEventListener('click', function (e) {
+		e.stopPropagation(); // Impede que qualquer clique dentro do dropdown feche-o
+	});
 });
