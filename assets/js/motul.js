@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			...new Set(
 				products.flatMap(p => {
 					const aprovacaoFabricante = p.AprovacaoFabricante ? p.AprovacaoFabricante.split(';') : [];
-					const recomendacaoFabricanteOleo = p.RecomendacaoFaabricanteOleo ? p.RecomendacaoFaabricanteOleo.split(';') : [];
+					const recomendacaoFabricanteOleo = p.RecomendacaoFabricanteOleo ? p.RecomendacaoFabricanteOleo.split(';') : [];
 					return [...aprovacaoFabricante, ...recomendacaoFabricanteOleo];
 				}),
 			),
