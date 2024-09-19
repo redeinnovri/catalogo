@@ -205,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 
 	// Atualiza o modal com os detalhes do grupo de produtos
+	// Modal update functionality
 	const exampleModalCenter = document.getElementById('exampleModalCenter');
 	exampleModalCenter.addEventListener('show.bs.modal', event => {
 		const button = event.relatedTarget;
@@ -212,18 +213,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		const modalTitle = exampleModalCenter.querySelector('.modal-title');
 		const modalBody = exampleModalCenter.querySelector('.modal-body');
+		const modalPrice = exampleModalCenter.querySelector('.product-price');
+		const modalImage = exampleModalCenter.querySelector('.product-img img');
+		const modalDescricao = exampleModalCenter.querySelector('.f-w-600');
+		const modalACEA = exampleModalCenter.querySelector('.acea');
+		const modalSEA = exampleModalCenter.querySelector('.sea');
 
 		modalTitle.textContent = group[0].DesignacaoComercial;
-		modalBody.innerHTML = ``;
+		modalBody.innerHTML = '';
 
-		// Ordena o grupo por Capacidade (ascendente)
+		// Sort group by Capacidade (ascending)
 		group.sort((a, b) => parseFloat(a.Capacidade) - parseFloat(b.Capacidade));
 
 		group.forEach(product => {
 			const button = document.createElement('button');
 			button.className = 'btn btn-outline-primary';
 			button.type = 'button';
-			button.textContent = `${product.Capacidade}L`;
+			button.textContent = `${product.Capacidade + product.UnidadeMedida}`;
 			button.addEventListener('click', () => {
 				populateModal(product);
 				highlightButton(button);
@@ -231,33 +237,59 @@ document.addEventListener('DOMContentLoaded', () => {
 			modalBody.appendChild(button);
 		});
 
-		// Seleciona e exibe automaticamente o produto com a menor Capacidade
+		// Automatically select and display the product with the lowest Capacidade
 		const lowestCapacityProduct = group[0];
 		populateModal(lowestCapacityProduct);
-		const firstButton = modalBody.querySelector('button');
-		highlightButton(firstButton);
+		highlightButton(modalBody.querySelector('button'));
 	});
 
-	// Realça o botão ativo
+	function populateModal(product) {
+		const modalPrice = exampleModalCenter.querySelector('.product-price');
+		const modalImage = exampleModalCenter.querySelector('.product-img img');
+		const modalDescricao = exampleModalCenter.querySelector('.f-w-600');
+		const modalACEA = exampleModalCenter.querySelector('.acea');
+		const modalSEA = exampleModalCenter.querySelector('.sea');
+		const modalEspec = exampleModalCenter.querySelector('.especificacao');
+		const modalAprov = exampleModalCenter.querySelector('.aprovacao');
+		const modalRecom = exampleModalCenter.querySelector('.recomendacao');
+		const copyPriceBtn = exampleModalCenter.querySelector('#copy-price-btn');
+
+		modalPrice.innerHTML = `${product.Referencia}`;
+		modalDescricao.innerHTML = `${product.Descricao}`;
+		modalACEA.innerHTML = `ACEA: ${product.EspecificacaoACEA || ''}`;
+		modalSEA.innerHTML = `SAE: ${product.ViscosidadeSAE || ''}`;
+		modalEspec.innerHTML = `Especificação: ${product.Especificacao || ''}`;
+		modalAprov.innerHTML = `Aprovação Fabricante: ${product.AprovacaoFabricante || ''}`;
+		modalRecom.innerHTML = `Recomendação Fabricante: ${product.RecomendacaoFabricanteOleo || ''}`;
+		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
+		modalImage.alt = product.DesignacaoComercial;
+
+		// Adiciona event listener para copiar o conteúdo de modalPrice
+		copyPriceBtn.addEventListener('click', () => {
+			navigator.clipboard
+				.writeText(modalPrice.textContent)
+				.then(() => {
+					// Sucesso ao copiar
+					console.log('Copiado com sucesso!');
+				})
+				.catch(err => {
+					// Falha ao copiar
+					console.error('Erro ao copiar: ', err);
+				});
+		});
+	}
+
 	function highlightButton(button) {
-		const buttons = button.parentNode.querySelectorAll('button');
-		buttons.forEach(btn => btn.classList.remove('active'));
-		button.classList.add('active');
+		const buttons = button.parentElement.querySelectorAll('button');
+		buttons.forEach(btn => {
+			btn.classList.remove('btn-primary');
+			btn.classList.add('btn-outline-primary');
+		});
+		button.classList.remove('btn-outline-primary');
+		button.classList.add('btn-primary');
 	}
 
 	// Exibe os detalhes do produto no modal
-	function populateModal(product) {
-		const modalImage = exampleModalCenter.querySelector('.modal-image img');
-		const modalDetails = exampleModalCenter.querySelector('.modal-details');
-		const modalAcea = exampleModalCenter.querySelector('#modal-acea');
-		const modalAprovacao = exampleModalCenter.querySelector('#modal-aprovacao');
-		const modalDescricao = exampleModalCenter.querySelector('#modal-descricao');
-
-		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
-		modalAcea.textContent = product.EspecificacaoACEA || 'N/A';
-		modalAprovacao.textContent = product.AprovacaoFabricante || 'N/A';
-		modalDescricao.textContent = product.Descricao || 'N/A';
-	}
 
 	// Função para configurar a pesquisa nos checkboxes
 	function setupFilterCheckboxes(inputId, filterContainer) {
