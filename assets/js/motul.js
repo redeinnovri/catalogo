@@ -150,7 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="card">
                         <div class="product-box">
                             <div class="product-img" style="text-align: center; text-align: -webkit-center">
-                                <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif'}" alt="${product.DesignacaoComercial}" style="height: 250px" />
+                                <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif'}" alt="${
+					product.DesignacaoComercial
+				}" style="height: 250px; object-fit: contain" />
                             </div>
                             <div class="user-profile">
                                 <div class="hovercard">
@@ -277,7 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		const modalAprov = exampleModalCenter.querySelector('.aprovacao');
 		const modalRecom = exampleModalCenter.querySelector('.recomendacao');
 		const copyPriceBtn = exampleModalCenter.querySelector('#copy-price-btn');
+		const modalFichaSeguranca = exampleModalCenter.querySelector('#fichaseguranca'); // Botão da ficha de segurança
 
+		// Atualiza o conteúdo do modal
 		modalPrice.innerHTML = `${product.Referencia}`;
 		modalDescricao.innerHTML = `${product.Descricao}`;
 		modalACEA.innerHTML = `ACEA: ${product.EspecificacaoACEA || ''}`;
@@ -288,8 +292,28 @@ document.addEventListener('DOMContentLoaded', () => {
 		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
 		modalImage.alt = product.DesignacaoComercial;
 
-		// Adiciona event listener para copiar o conteúdo de modalPrice
-		copyPriceBtn.addEventListener('click', () => {
+		// Verifica se há um link de Ficha de Segurança
+		if (product.FichaTecnica) {
+			modalFichaSeguranca.href = product.FichaTecnica; // Define o link
+			modalFichaSeguranca.target = '_blank'; // Abre em uma nova aba
+			modalFichaSeguranca.rel = 'noopener noreferrer'; // Boa prática de segurança
+			modalFichaSeguranca.style.pointerEvents = 'auto'; // Reativa o botão
+			modalFichaSeguranca.classList.remove('disabled'); // Remove a classe desativada
+		} else {
+			// Se não houver link, desativa o botão ou remove o href
+			modalFichaSeguranca.removeAttribute('href');
+			modalFichaSeguranca.style.pointerEvents = 'none'; // Evita que o botão seja clicável
+			modalFichaSeguranca.classList.add('disabled'); // Opcional: adiciona uma classe para indicar desativação
+		}
+
+		// Remove qualquer event listener anterior para evitar múltiplos eventos
+		copyPriceBtn.removeEventListener('click', copyPriceToClipboard);
+
+		// Event listener para copiar o conteúdo de modalPrice
+		copyPriceBtn.addEventListener('click', copyPriceToClipboard);
+
+		// Função separada para copiar o preço
+		function copyPriceToClipboard() {
 			navigator.clipboard
 				.writeText(modalPrice.textContent)
 				.then(() => {
@@ -300,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					// Falha ao copiar
 					console.error('Erro ao copiar: ', err);
 				});
-		});
+		}
 	}
 
 	function highlightButton(button) {
