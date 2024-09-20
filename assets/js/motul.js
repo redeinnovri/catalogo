@@ -91,7 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
 			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.includes(product.ViscosidadeSAE) : true;
 			const matchesAcea = selectedAceas.length > 0 ? selectedAceas.some(acea => (product.EspecificacaoACEA || '').includes(acea)) : true;
 			const matchesMarcas = selectedMarcas.length > 0 ? selectedMarcas.includes(product.Marca) : true;
-			const matchesAprovacoes = selectedAprovacoes.length > 0 ? selectedAprovacoes.some(aprov => (product.AprovacaoFabricante || '').includes(aprov)) : true;
+
+			// Agora verificamos tanto a AprovacaoFabricante quanto a RecomendacaoFabricanteOleo para aprovações/recomendações
+			const matchesAprovacoes =
+				selectedAprovacoes.length > 0
+					? selectedAprovacoes.some(aprov => (product.AprovacaoFabricante || '').toUpperCase().includes(aprov) || (product.RecomendacaoFabricanteOleo || '').toUpperCase().includes(aprov))
+					: true;
 
 			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea && matchesMarcas && matchesAprovacoes;
 		});
