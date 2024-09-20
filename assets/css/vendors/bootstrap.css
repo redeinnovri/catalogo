@@ -528,6 +528,19 @@ select:disabled {
 	color: black;
 }
 
+.btn.btn-reset-filters-dropdown {
+	background-color: #f5f5f5;
+	border-color: #000000;
+	color: black;
+	padding: 0.5px;
+}
+
+.btn.btn-reset-filters-dropdown:hover {
+	background-color: #f5f5f5;
+	border-color: #000000;
+	color: black;
+}
+
 [list]:not([type='date']):not([type='datetime-local']):not([type='month']):not([type='week']):not([type='time'])::-webkit-calendar-picker-indicator {
 	display: none !important;
 }

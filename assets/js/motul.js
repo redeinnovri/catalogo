@@ -47,21 +47,31 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function populateDropdown(container, options, inputId) {
+		// Adiciona botão de reset ao topo de cada filtro, logo abaixo da barra de pesquisa
+		const resetButton = document.createElement('button');
+		resetButton.textContent = 'Limpar Filtros';
+		resetButton.classList.add('btn', 'btn-reset-filters-dropdown', 'w-100', 'mb-3');
+		resetButton.addEventListener('click', () => {
+			resetFilterCheckboxes(container); // Limpa os checkboxes desse filtro
+		});
+
+		container.appendChild(resetButton); // Adiciona o botão antes das opções
+
 		options.forEach(option => {
 			const checkbox = document.createElement('input');
 			checkbox.type = 'checkbox';
 			checkbox.value = option;
-			checkbox.addEventListener('change', filterAndSearch);
+			checkbox.addEventListener('change', filterAndSearch); // Filtra ao selecionar/deselecionar
 			checkbox.classList.add('form-check-input');
 
 			const label = document.createElement('label');
 			label.textContent = option;
-			label.classList.add('form-check-label'); // Adiciona classe para facilitar o styling
+			label.classList.add('form-check-label'); // Classe para estilização
 
 			const div = document.createElement('div');
-			div.classList.add('form-check', 'filter-option'); // Classe adicional para a estilização
+			div.classList.add('form-check', 'filter-option'); // Classe adicional para estilização
 
-			// Adiciona evento na div para marcar/desmarcar o checkbox quando clicar
+			// Adiciona evento na div para marcar/desmarcar o checkbox ao clicar
 			div.addEventListener('click', () => {
 				checkbox.checked = !checkbox.checked; // Alterna entre marcado e desmarcado
 				checkbox.dispatchEvent(new Event('change')); // Dispara o evento de change manualmente
@@ -69,11 +79,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			div.appendChild(checkbox);
 			div.appendChild(label);
-			container.appendChild(div);
+			container.appendChild(div); // Adiciona cada opção abaixo do botão de reset
 		});
 
 		// Adiciona o evento de filtragem para o input de busca
 		setupFilterCheckboxes(inputId, container);
+	}
+
+	function resetFilterCheckboxes(container) {
+		const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+		checkboxes.forEach(checkbox => {
+			checkbox.checked = false; // Desmarca todos os checkboxes
+		});
+
+		filterAndSearch(); // Atualiza a exibição dos produtos após limpar os filtros
 	}
 
 	// Função de filtragem e pesquisa
