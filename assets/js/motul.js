@@ -28,16 +28,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		const aceas = [...new Set(products.flatMap(p => (p.EspecificacaoACEA ? p.EspecificacaoACEA.split('; ') : [])))].sort();
 		const marcas = [...new Set(products.map(p => p.Marca))].sort();
 
-		// Combina as opções de AprovacaoFabricante e RecomendacaoFabricanteOleo, removendo duplicatas
+		// Combina as opções de AprovacaoFabricante e RecomendacaoFabricanteOleo, removendo duplicatas e ordenando alfabeticamente
 		const aprovacoes = [
 			...new Set(
 				products.flatMap(p => {
-					const aprovacaoFabricante = p.AprovacaoFabricante ? p.AprovacaoFabricante.split(';') : [];
-					const recomendacaoFabricanteOleo = p.RecomendacaoFabricanteOleo ? p.RecomendacaoFabricanteOleo.split(';') : [];
+					const aprovacaoFabricante = p.AprovacaoFabricante ? p.AprovacaoFabricante.split(';').map(a => a.trim().toUpperCase()) : [];
+					const recomendacaoFabricanteOleo = p.RecomendacaoFabricanteOleo ? p.RecomendacaoFabricanteOleo.split(';').map(r => r.trim().toUpperCase()) : [];
 					return [...aprovacaoFabricante, ...recomendacaoFabricanteOleo];
 				}),
 			),
-		].sort();
+		].sort((a, b) => a.localeCompare(b));
 
 		populateDropdown(filterGama, gamas, 'gamaSearch');
 		populateDropdown(filterViscosidade, viscosidades, 'viscosidadeSearch');
