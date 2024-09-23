@@ -1,3 +1,11 @@
+const style = document.createElement('style');
+style.textContent = `
+    .no-results {
+        opacity: 0.3;
+    }
+`;
+document.head.appendChild(style);
+
 document.addEventListener('DOMContentLoaded', () => {
 	const searchBar = document.getElementById('search-bar');
 	const filterGama = document.getElementById('filter-gama');
@@ -23,12 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Popula os filtros com checkboxes
 	function populateFilters(products) {
-		const gamas = [...new Set(products.map(p => p.Gama))].sort();
-		const viscosidades = [...new Set(products.map(p => p.ViscosidadeSAE))].sort();
+		const gamas = [...new Set(products.map(p => String(p.Gama).trim()))].sort();
+		const viscosidades = [...new Set(products.map(p => String(p.ViscosidadeSAE).trim()))].sort();
 		const aceas = [...new Set(products.flatMap(p => (p.EspecificacaoACEA ? p.EspecificacaoACEA.split('; ') : [])))].sort();
-		const marcas = [...new Set(products.map(p => p.Marca))].sort();
+		const marcas = [...new Set(products.map(p => String(p.Marca).trim()))].sort();
 
-		// Combina as opções de AprovacaoFabricante e RecomendacaoFabricanteOleo, removendo duplicatas e ordenando alfabeticamente
 		const aprovacoes = [
 			...new Set(
 				products.flatMap(p => {
@@ -39,14 +46,38 @@ document.addEventListener('DOMContentLoaded', () => {
 			),
 		].sort((a, b) => a.localeCompare(b));
 
-		populateDropdown(filterGama, gamas, 'gamaSearch');
-		populateDropdown(filterViscosidade, viscosidades, 'viscosidadeSearch');
-		populateDropdown(filterAcea, aceas, 'aceaSearch');
-		populateDropdown(filterMarca, marcas, 'marcaSearch');
-		populateDropdown(filterAprovacao, aprovacoes, 'aprovacaoSearch');
+		// Remove valores em branco ("" ou strings vazias)
+		populateDropdown(
+			filterGama,
+			gamas.filter(g => g !== ''),
+			'gamaSearch',
+		);
+		populateDropdown(
+			filterViscosidade,
+			viscosidades.filter(v => v !== ''),
+			'viscosidadeSearch',
+		);
+		populateDropdown(
+			filterAcea,
+			aceas.filter(a => a !== ''),
+			'aceaSearch',
+		);
+		populateDropdown(
+			filterMarca,
+			marcas.filter(m => m !== ''),
+			'marcaSearch',
+		);
+		populateDropdown(
+			filterAprovacao,
+			aprovacoes.filter(a => a !== ''),
+			'aprovacaoSearch',
+		);
 	}
 
 	function populateDropdown(container, options, inputId) {
+		// Filtra valores em branco antes de popular o filtro
+		options = options.filter(option => option !== undefined && option.trim() !== '');
+
 		// Adiciona botão de reset ao topo de cada filtro, logo abaixo da barra de pesquisa
 		const resetButton = document.createElement('button');
 		resetButton.textContent = 'Limpar Filtros';
@@ -107,11 +138,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		const filteredProducts = products.filter(product => {
 			const matchesSearch = product.DesignacaoComercial.toLowerCase().includes(searchTerm) || product.Descricao.toLowerCase().includes(searchTerm);
 			const matchesGama = selectedGamas.length > 0 ? selectedGamas.includes(product.Gama) : true;
-			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.includes(product.ViscosidadeSAE) : true;
+			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.includes((product.ViscosidadeSAE || '').toString().trim()) : true;
 			const matchesAcea = selectedAceas.length > 0 ? selectedAceas.some(acea => (product.EspecificacaoACEA || '').includes(acea)) : true;
 			const matchesMarcas = selectedMarcas.length > 0 ? selectedMarcas.includes(product.Marca) : true;
-
-			// Agora verificamos tanto a AprovacaoFabricante quanto a RecomendacaoFabricanteOleo para aprovações/recomendações
 			const matchesAprovacoes =
 				selectedAprovacoes.length > 0
 					? selectedAprovacoes.some(aprov => (product.AprovacaoFabricante || '').toUpperCase().includes(aprov) || (product.RecomendacaoFabricanteOleo || '').toUpperCase().includes(aprov))
@@ -120,7 +149,52 @@ document.addEventListener('DOMContentLoaded', () => {
 			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea && matchesMarcas && matchesAprovacoes;
 		});
 
+		// Função já existente para exibir os produtos filtrados
 		displayGroupedProducts(filteredProducts);
+
+		// Aqui chamamos a função para atualizar o estado dos filtros
+		updateFilterStates(filteredProducts);
+	}
+
+	function updateFilterStates(filteredProducts) {
+		const filterContainers = [
+			{ container: filterGama, prop: 'Gama' },
+			{ container: filterViscosidade, prop: 'ViscosidadeSAE' },
+			{ container: filterAcea, prop: 'EspecificacaoACEA' },
+			{ container: filterMarca, prop: 'Marca' },
+			{ container: filterAprovacao, prop: ['AprovacaoFabricante', 'RecomendacaoFabricanteOleo'] },
+		];
+
+		filterContainers.forEach(({ container, prop }) => {
+			const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+
+			checkboxes.forEach(checkbox => {
+				const filterValue = checkbox.value.trim(); // Garantir que não há espaços em branco
+				const filteredCount = filteredProducts.filter(product => {
+					if (Array.isArray(prop)) {
+						// Para arrays (ex: AprovacaoFabricante e RecomendacaoFabricanteOleo), verifica em ambos
+						return prop.some(p => {
+							const productValue = (product[p] || '').toString().toUpperCase(); // Normaliza para string e uppercase
+							return productValue.includes(filterValue.toUpperCase()); // Compara sem distinção de maiúsculas/minúsculas
+						});
+					} else {
+						// Para propriedades simples, compara como string sem distinção de maiúsculas/minúsculas
+						const productValue = (product[prop] || '').toString().toUpperCase(); // Normaliza para string e uppercase
+						return productValue === filterValue.toUpperCase();
+					}
+				}).length;
+
+				if (filteredCount === 0) {
+					checkbox.parentElement.classList.add('no-results');
+					checkbox.disabled = true; // Desativa o checkbox se não houver resultados
+					checkbox.parentElement.style.opacity = 0.3; // Reduz a opacidade para dar feedback visual
+				} else {
+					checkbox.parentElement.classList.remove('no-results');
+					checkbox.disabled = false; // Ativa o checkbox se houver resultados
+					checkbox.parentElement.style.opacity = 1; // Restaura a opacidade
+				}
+			});
+		});
 	}
 
 	function getSelectedCheckboxes(container) {
