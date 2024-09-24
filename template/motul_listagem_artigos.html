@@ -589,7 +589,16 @@
 								<!-- Filtro de Viscosidade -->
 								<div class="col-md-2">
 									<div class="dropdown">
-										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="viscosidadeDropdown" data-bs-toggle="dropdown" aria-expanded="false">Viscosidade</button>
+										<button
+											class="btn btn-filter dropdown-toggle w-100"
+											type="button"
+											id="viscosidadeDropdown"
+											data-bs-toggle="dropdown"
+											aria-expanded="false"
+											style="text-overflow: ellipsis; overflow: hidden"
+										>
+											Viscosidade
+										</button>
 										<div class="dropdown-menu p-3 w-100" aria-labelledby="viscosidadeDropdown">
 											<input type="text" id="viscosidadeSearch" class="form-control mb-2" placeholder="Pesquisar..." />
 											<div id="filter-viscosidade" class="checkbox-list">
@@ -615,7 +624,16 @@
 								<!-- Filtro de Aprovação Fabricante -->
 								<div class="col-md-3">
 									<div class="dropdown">
-										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="aprovacaoDropdown" data-bs-toggle="dropdown" aria-expanded="false">Aprovação / Recomendação</button>
+										<button
+											class="btn btn-filter dropdown-toggle w-100"
+											type="button"
+											id="aprovacaoDropdown"
+											data-bs-toggle="dropdown"
+											aria-expanded="false"
+											style="text-overflow: ellipsis; overflow: hidden"
+										>
+											Aprovação / Recomendação
+										</button>
 										<div class="dropdown-menu p-3 w-100" aria-labelledby="aprovacaoDropdown">
 											<input type="text" id="aprovacaoSearch" class="form-control mb-2" placeholder="Pesquisar..." />
 											<div id="filter-aprovacao" class="checkbox-list">
@@ -640,62 +658,59 @@
 
 					<!-- Container-fluid Ends-->
 					<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-header">
-                <div class="product-box row align-items-center">
-                    <div class="product-img col-lg-6" style="text-align: center;">
-                        <img class="img-fluid" id="modal-image" src="../assets/images/ecommerce/01.jpg" alt="" />
-                    </div>
-                    <div class="product-details col-lg-6 text-start">
-                        <div class="row flex col-12">
-                            <i class="fa fa-copy col-1" id="copy-price-btn" style="align-content: center; cursor: pointer"></i>
-                            <div class="product-price col-9" id="modal-price">
-                                <!-- Preço será atualizado aqui -->
-                            </div>
-                        </div>
+						<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalCenterTitle"></h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-header" style="position: relative; flex: 1 1 auto; padding: var(--bs-modal-padding); display: unset">
+									<div class="product-box row align-items-center">
+										<div class="product-img col-lg-6" style="text-align: center; justify-content: center; height: 250px; display: flex">
+											<img class="img-fluid" id="modal-image" src="../assets/images/ecommerce/01.jpg" alt="" style="max-height: 100%; max-width: 100%; object-fit: contain" />
+										</div>
+										<div class="product-details col-lg-6 text-start">
+											<div class="row flex col-12">
+												<i class="fa fa-copy col-1" id="copy-price-btn" style="align-content: center; cursor: pointer"></i>
+												<div class="product-price col-9" id="modal-price">
+													<!-- Preço será atualizado aqui -->
+												</div>
+											</div>
 
-                        <div class="product-view">
-                            <h6 class="f-w-600"></h6>
-                            <p class="mb-1 acea" id="modal-acea"></p>
-                            <p class="mb-1 sea" id="modal-sea"></p>
-                            <p class="mb-1 especificacao" id="modal-especificacao"></p>
-                            <p class="mb-1 aprovacao" id="modal-aprovacao"></p>
-							<p class="mb-1 recomendacao" id="modal-recomendacao"></p>
-                        </div>
-                        <div class="modal-body" id="modal-descricao" style="padding: 10px 0px 10px 0px">
-                            <!-- Descrição será atualizada aqui -->
-                        </div>
-                        <div class="product-qnty">
-                            <div class="addcart-btn">
-                                <button class="example-popover btn btn-primary mb-0 me-0" type="button" data-container="body" data-bs-toggle="tooltip" data-bs-placement="top" title="Aqui aparece imagem a explicar!">?</button>
-                                <a class="btn btn-primary ms-2" href="https://www.motul.com/pt-PT/lubricants" target="_blank" id="fichaseguranca">Ficha Técnica/Segurança</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-body">
-                <!-- Botões de capacidade serão inseridos aqui -->
-            </div>
-            <div class="modal-footer">
-                <div class="product-img">
-                    <img class="img-fluid" src="" alt="" />
-                </div>
-
-                <div class="product-quantity">
-                    <!-- Quantidade será atualizada aqui -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+											<div class="product-view">
+												<h6 class="f-w-600"></h6>
+												<p class="mb-1 acea" id="modal-acea"></p>
+												<p class="mb-1 sea" id="modal-sea"></p>
+												<p class="mb-1 especificacao" id="modal-especificacao"></p>
+												<p class="mb-1 aprovacao" id="modal-aprovacao"></p>
+												<p class="mb-1 recomendacao" id="modal-recomendacao"></p>
+											</div>
+											<div class="modal-body mt-4" id="modal-descricao" style="padding: 5px 0px 5px 0px">
+												<!-- Descrição será atualizada aqui -->
+											</div>
+											<div class="product-qnty">
+												<div class="addcart-btn">
+													<!-- <button
+														class="example-popover btn btn-primary mb-0 me-0"
+														type="button"
+														data-container="body"
+														data-bs-toggle="tooltip"
+														data-bs-placement="top"
+														title="Aqui aparece imagem a explicar!"
+													>
+														?
+													</button> -->
+													<a class="btn btn-primary" href="https://www.motul.com/pt-PT/lubricants" target="_blank" id="fichaseguranca">Ficha Técnica/Segurança</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
+
 				<!-- footer start-->
 				<footer class="footer">
 					<div class="container-fluid">
@@ -728,29 +743,6 @@
 		<script src="../assets/js/slick/slick.min.js"></script>
 		<script src="../assets/js/slick/slick.js"></script>
 		<script src="../assets/js/header-slick.js"></script>
-		<script src="../assets/js/chart/apex-chart/apex-chart.js"></script>
-		<script src="../assets/js/chart/apex-chart/stock-prices.js"></script>
-		<script src="../assets/js/chart/apex-chart/moment.min.js"></script>
-		<script src="../assets/js/chart/echart/esl.js"></script>
-		<script src="../assets/js/chart/echart/config.js"></script>
-		<script src="../assets/js/chart/echart/pie-chart/facePrint.js"></script>
-		<script src="../assets/js/chart/echart/pie-chart/testHelper.js"></script>
-		<script src="../assets/js/chart/echart/pie-chart/custom-transition-texture.js"></script>
-		<script src="../assets/js/chart/echart/data/symbols.js"></script>
-		<!-- calendar js-->
-		<script src="../assets/js/datepicker/date-picker/datepicker.js"></script>
-		<script src="../assets/js/datepicker/date-picker/datepicker.en.js"></script>
-		<script src="../assets/js/datepicker/date-picker/datepicker.custom.js"></script>
-		<script src="../assets/js/dashboard/dashboard_3.js"></script>
-		<script src="../assets/js/product-tab.js"></script>
-		<script src="../assets/js/tooltip-init.js"></script>
-		<script src="../assets/js/select2/tagify.js"></script>
-		<script src="../assets/js/select2/tagify.polyfills.min.js"></script>
-		<script src="../assets/js/select2/intltelinput.min.js"></script>
-		<script src="../assets/js/select2/telephone-input.js"></script>
-		<script src="../assets/js/select2/custom-inputsearch.js"></script>
-		<script src="../assets/js/select2/select3-custom.js"></script>
-		<script src="../assets/js/height-equal.js"></script>
 		<!-- Plugins JS Ends-->
 
 		<!-- Theme js-->

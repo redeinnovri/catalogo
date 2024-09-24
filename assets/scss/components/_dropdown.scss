@@ -24,23 +24,23 @@
 	.dropdown-toggle {
 		color: $theme-font-color;
 		border-radius: 8px;
-		padding: 11px 12px;  
+		padding: 11px 12px;
 		border: 1px solid $light-color;
 		width: 106px;
 		text-align: left;
-		&:focus{
+		&:focus {
 			border: 1px solid $light-color;
 			box-shadow: none;
-		} 
+		}
 		&:after {
 			position: absolute;
-			top: 50%;
+			top: 40%;
 			right: 10px;
 			-webkit-transform: translateY(-50%);
 			transform: translateY(-50%);
-			content: "\f107";
+			content: '\f107';
 			border: none;
-			font-family: "FontAwesome";
+			font-family: 'FontAwesome';
 			font-size: 18px;
 			margin: 0;
 		}
@@ -49,16 +49,15 @@
 			color: $white;
 		}
 	}
-	.dropdown-toggle-store{
+	.dropdown-toggle-store {
 		width: 130px;
 	}
-	.dropdown-toggle-calendar{
+	.dropdown-toggle-calendar {
 		width: 218px;
 	}
 	.dropdown-menu {
 		font-family: $font-Montserrat;
 		z-index: 4;
-		
 	}
 }
 
@@ -68,10 +67,10 @@
 			width: auto;
 		}
 	}
-	.btn-group{
-		lable{
-			&.active{
-				.docs-tooltip{
+	.btn-group {
+		lable {
+			&.active {
+				.docs-tooltip {
 					color: $white !important;
 				}
 			}
@@ -117,7 +116,6 @@
 	margin-bottom: -10px;
 
 	.btn-group {
-
 		.btn-round {
 			border-radius: 50px;
 		}
@@ -126,7 +124,7 @@
 	.separated-btn {
 		margin-left: -6px;
 
-		[dir="rtl"] & {
+		[dir='rtl'] & {
 			margin-left: unset;
 			margin-right: -6px;
 		}
@@ -235,7 +233,6 @@
 	}
 }
 
-
 .dropdown-block {
 	li {
 		.dropdown-item {
@@ -331,7 +328,7 @@
 		border-bottom: 0;
 		border-left: 4px solid transparent;
 
-		[dir="rtl"] & {
+		[dir='rtl'] & {
 			margin-left: unset;
 			margin-right: 8px;
 		}
@@ -348,7 +345,7 @@
 			border-right: 4px solid;
 			border-bottom: 4px solid transparent;
 
-			[dir="rtl"] & {
+			[dir='rtl'] & {
 				margin-left: 8px;
 				margin-right: unset;
 			}
@@ -368,7 +365,7 @@
 			border-bottom: 4px solid;
 			border-left: 4px solid transparent;
 
-			[dir="rtl"] & {
+			[dir='rtl'] & {
 				margin-left: unset;
 				margin-right: 8px;
 			}
@@ -388,7 +385,7 @@
 			border-left: 4px solid;
 			margin-left: 8px;
 
-			[dir="rtl"] & {
+			[dir='rtl'] & {
 				margin-left: unset;
 				margin-right: 8px;
 			}
@@ -402,7 +399,7 @@
 
 .dropdown-menu {
 	.helper-truncate {
-		@media (max-width:400px) {
+		@media (max-width: 400px) {
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
@@ -414,7 +411,6 @@
 	.dropdown-block {
 		li {
 			.dropdown-item {
-
 				&:hover,
 				&.active {
 					background-color: $dark-color;
@@ -433,7 +429,7 @@ btn-group {
 			.input-group-text {
 				padding: 0px 8px 0px 0px;
 
-				[dir="rtl"] & {
+				[dir='rtl'] & {
 					padding: 0px 0px 0px 8px;
 				}
 			}
@@ -445,7 +441,7 @@ btn-group {
 	.dropdown-menu {
 		li {
 			.dropdown-item {
-				[dir="rtl"] & {
+				[dir='rtl'] & {
 					text-align: right;
 				}
 			}
@@ -454,7 +450,7 @@ btn-group {
 
 	.btn-group {
 		.dropdown-menu {
-			[dir="rtl"] & {
+			[dir='rtl'] & {
 				text-align: right;
 			}
 		}
@@ -463,9 +459,9 @@ btn-group {
 
 .heading-dropdown {
 	.dropdown-menu {
-		>li {
+		> li {
 			&:first-child {
-				>a {
+				> a {
 					border-bottom: 4px solid var(--recent-border);
 					border-top: 0;
 					background-color: $light-background;

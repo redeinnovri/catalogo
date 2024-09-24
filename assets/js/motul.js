@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	function populateDropdown(container, options, inputId) {
 		// Filtra valores em branco antes de popular o filtro
-		options = options.filter(option => option !== undefined && option.trim() !== '');
+		options = options.filter(option => option !== 'undefined' && option.trim() !== '');
 
 		// Adiciona botão de reset ao topo de cada filtro, logo abaixo da barra de pesquisa
 		const resetButton = document.createElement('button');
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				const product = group[0]; // Usa o primeiro produto do grupo para exibir
 
 				const productCard = document.createElement('div');
-				productCard.className = 'col-xl-3 col-sm-12';
+				productCard.className = 'col-xl-3 col-sm-6';
 
 				// Card original com visual restaurado
 				productCard.innerHTML = `
@@ -329,6 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			const button = document.createElement('button');
 			button.className = 'btn btn-outline-primary';
 			button.type = 'button';
+			button.style = 'padding: 5px 10px; margin: 0.1rem;';
 			button.textContent = `${product.Capacidade + product.UnidadeMedida}`;
 			button.addEventListener('click', () => {
 				populateModal(product);
@@ -358,11 +359,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		// Atualiza o conteúdo do modal
 		modalPrice.innerHTML = `${product.Referencia}`;
 		modalDescricao.innerHTML = `${product.Descricao}`;
-		modalACEA.innerHTML = `ACEA: ${product.EspecificacaoACEA || ''}`;
-		modalSEA.innerHTML = `SAE: ${product.ViscosidadeSAE || ''}`;
-		modalEspec.innerHTML = `Especificação: ${product.Especificacao || ''}`;
-		modalAprov.innerHTML = `Aprovação Fabricante: ${product.AprovacaoFabricante || ''}`;
-		modalRecom.innerHTML = `Recomendação Fabricante: ${product.RecomendacaoFabricanteOleo || ''}`;
+		// Destaca as palavras e deixa o texto à frente com estilo normal
+		modalACEA.innerHTML = `<span style="font-weight: 600;color: #000;">ACEA:</span> ${product.EspecificacaoACEA || ''}`;
+		modalSEA.innerHTML = `<span style="font-weight: 600;color: #000;">SAE:</span> ${product.ViscosidadeSAE || ''}`;
+		modalEspec.innerHTML = `<span style="font-weight: 600;color: #000;">Especificação:</span> ${product.Especificacao || ''}`;
+		modalAprov.innerHTML = `<span style="font-weight: 600;color: #000;">Aprovação Fabricante:</span> ${product.AprovacaoFabricante || ''}`;
+		modalRecom.innerHTML = `<span style="font-weight: 600;color: #000;">Recomendação Fabricante:</span> ${product.RecomendacaoFabricanteOleo || ''}`;
 		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
 		modalImage.alt = product.DesignacaoComercial;
 
