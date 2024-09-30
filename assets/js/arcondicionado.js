@@ -320,14 +320,14 @@ document.addEventListener('DOMContentLoaded', () => {
 				button.className = 'btn btn-outline-primary';
 				button.type = 'button';
 				button.style = 'padding: 5px 10px; margin: 0.1rem;';
-				button.textContent = `${product.Descricao}`;
+				button.textContent = truncateString(product.Descricao || product.Referencia, 45); // Aqui 40 é o limite de caracteres
+
 				button.addEventListener('click', () => {
 					populateModal(product);
 					highlightButton(button);
 				});
 				modalBody.appendChild(button);
-			}
-			else {
+			} else {
 				const button = document.createElement('button');
 				button.className = 'btn btn-outline-primary';
 				button.type = 'button';
@@ -340,6 +340,16 @@ document.addEventListener('DOMContentLoaded', () => {
 				modalBody.appendChild(button);
 			}
 		});
+
+		function truncateString(str, maxLength) {
+			if (str.length <= maxLength) return str;
+
+			const partLength = Math.floor((maxLength - 3) / 2); // -3 para as reticências
+			const start = str.slice(0, partLength); // Pega o início da string
+			const end = str.slice(-partLength); // Pega o final da string
+
+			return `${start}...${end}`;
+		}
 
 		// Automatically select and display the product with the lowest Capacidade
 		const lowestCapacityProduct = group[0];
