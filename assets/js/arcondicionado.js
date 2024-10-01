@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		const viscosidades = [...new Set(products.flatMap(p => (p.Gas ? p.Gas : [])))].sort();
 		const aceas = [...new Set(products.flatMap(p => (p.Funcionamento ? p.Funcionamento.split(';') : [])))].sort();
 		const marcas = [...new Set(products.map(p => String(p.Marca).trim()))].sort();
-		const aprovacoes = [...new Set(products.flatMap(p => (p.ArtigoRelacionado ? p.ArtigoRelacionado : [])))].sort();
-		// const aprovacoes = [...new Set(products.flatMap(p => (p.ArtigoRelacionado ? p.ArtigoRelacionado.split(';') : [])))].sort();
+		// const aprovacoes = [...new Set(products.flatMap(p => (p.ArtigoRelacionado ? p.ArtigoRelacionado : [])))].sort();
+		const aprovacoes = [...new Set(products.flatMap(p => (p.ArtigoRelacionado ? p.ArtigoRelacionado.split(';') : [])))].sort();
 
 		// Remove valores em branco ("" ou strings vazias)
 		populateDropdown(
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const selectedViscosidades = getSelectedCheckboxes(filterViscosidade);
 		const selectedAceas = getSelectedCheckboxes(filterAcea);
 		const selectedMarcas = getSelectedCheckboxes(filterMarca);
-		const selectedAprovacoes = getSelectedCheckboxes(filterAprovacao);
+		const selectedAprovacoes = getSelectedCheckboxes(filterAprovacao); // Artigos Relacionados
 
 		const filteredProducts = products.filter(product => {
 			const matchesSearch = product.NomeComercial.toLowerCase().includes(searchTerm) || product.Descricao.toLowerCase().includes(searchTerm);
@@ -133,17 +133,23 @@ document.addEventListener('DOMContentLoaded', () => {
 			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.some(gas => (product.Gas || '').includes(gas)) : true;
 			const matchesAcea = selectedAceas.length > 0 ? selectedAceas.some(acea => (product.Funcionamento || '').includes(acea)) : true;
 			const matchesMarcas = selectedMarcas.length > 0 ? selectedMarcas.includes(product.Marca) : true;
-			const matchesAprovacoes = selectedAprovacoes.length > 0 ? selectedAprovacoes.some(ArtigoRelacionado => (product.ArtigoRelacionado || '').includes(ArtigoRelacionado)) : true;
+
+			// Filtragem ajustada de Artigos Relacionados
+			const matchesAprovacoes =
+				selectedAprovacoes.length > 0
+					? selectedAprovacoes.some(aprovacao => {
+							const relacionados = product.ArtigoRelacionado ? product.ArtigoRelacionado.split(';') : [];
+							return relacionados.some(artigo => artigo.trim().toUpperCase() === aprovacao.toUpperCase());
+					  })
+					: true;
 
 			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea && matchesMarcas && matchesAprovacoes;
 		});
 
-		// Função já existente para exibir os produtos filtrados
 		displayGroupedProducts(filteredProducts);
-
-		// Aqui chamamos a função para atualizar o estado dos filtros
 		updateFilterStates(filteredProducts);
 	}
+
 
 	function updateFilterStates(filteredProducts) {
 		const filterContainers = [
@@ -164,12 +170,28 @@ document.addEventListener('DOMContentLoaded', () => {
 						// Para arrays (ex: AprovacaoFabricante e RecomendacaoFabricanteOleo), verifica em ambos
 						return prop.some(p => {
 							const productValue = (product[p] || '').toString().toUpperCase(); // Normaliza para string e uppercase
-							return productValue.includes(filterValue.toUpperCase()); // Compara sem distinção de maiúsculas/minúsculas
+
+							// Verifica se o valor contém um ";", aplicando a verificação extra
+							if (productValue.includes(';')) {
+								// Dividir valores separados por ";" e verificar se algum coincide
+								return productValue.split(';').some(value => value.trim().toUpperCase() === filterValue.toUpperCase());
+							} else {
+								// Verificação original sem separação por ";"
+								return productValue.includes(filterValue.toUpperCase());
+							}
 						});
 					} else {
-						// Para propriedades simples, compara como string sem distinção de maiúsculas/minúsculas
+						// Para propriedades simples, aplica a mesma lógica
 						const productValue = (product[prop] || '').toString().toUpperCase(); // Normaliza para string e uppercase
-						return productValue === filterValue.toUpperCase();
+
+						// Verifica se o valor contém um ";", aplicando a verificação extra
+						if (productValue.includes(';')) {
+							// Dividir valores separados por ";" e verificar se algum coincide
+							return productValue.split(';').some(value => value.trim().toUpperCase() === filterValue.toUpperCase());
+						} else {
+							// Verificação original sem separação por ";"
+							return productValue.includes(filterValue.toUpperCase());
+						}
 					}
 				}).length;
 
