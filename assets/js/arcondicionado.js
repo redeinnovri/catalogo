@@ -239,9 +239,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="card">
                         <div class="product-box">
                             <div class="product-img" style="text-align: center; text-align: -webkit-center">
-                                <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/PICCOLA_R744.jpg'}" alt="${
-					product.NomeComercial
-				}" style="height: 250px; object-fit: contain" />
+                                <img class="img-fluid" src="${
+																	product.imgUrl || 'https://raw.githubusercontent.com/redeinnovri/catalogo/refs/heads/main/assets/images/dashboard-3/product/PICCOLA_R744.jpg'
+																}" alt="${product.NomeComercial}" style="height: 250px; object-fit: contain" />
                             </div>
                             <div class="user-profile">
                                 <div class="hovercard">
