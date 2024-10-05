@@ -1,7 +1,7 @@
 const style = document.createElement('style');
 style.textContent = `
     .no-results {
-        opacity: 0.3;
+        opacity: 0.7;
     }
 `;
 document.head.appendChild(style);
@@ -136,7 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		const selectedAprovacoes = getSelectedCheckboxes(filterAprovacao);
 
 		const filteredProducts = products.filter(product => {
-			const matchesSearch = product.DesignacaoComercial.toLowerCase().includes(searchTerm) || product.Descricao.toLowerCase().includes(searchTerm);
+			const matchesSearch =
+				product.DesignacaoComercial.toLowerCase().includes(searchTerm) ||
+				product.Descricao.toLowerCase().includes(searchTerm) ||
+				(product.Referencia && product.Referencia.toString().toLowerCase().includes(searchTerm));
 			const matchesGama = selectedGamas.length > 0 ? selectedGamas.includes(product.Gama) : true;
 			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.includes((product.ViscosidadeSAE || '').toString().trim()) : true;
 			const matchesAcea = selectedAceas.length > 0 ? selectedAceas.some(acea => (product.EspecificacaoACEA || '').includes(acea)) : true;
@@ -187,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (filteredCount === 0) {
 					checkbox.parentElement.classList.add('no-results');
 					checkbox.disabled = true; // Desativa o checkbox se não houver resultados
-					checkbox.parentElement.style.opacity = 0.3; // Reduz a opacidade para dar feedback visual
+					checkbox.parentElement.style.opacity = 0.7; // Reduz a opacidade para dar feedback visual
 				} else {
 					checkbox.parentElement.classList.remove('no-results');
 					checkbox.disabled = false; // Ativa o checkbox se houver resultados

@@ -128,7 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		const selectedAprovacoes = getSelectedCheckboxes(filterAprovacao); // Artigos Relacionados
 
 		const filteredProducts = products.filter(product => {
-			const matchesSearch = product.NomeComercial.toLowerCase().includes(searchTerm) || product.Descricao.toLowerCase().includes(searchTerm);
+			const matchesSearch =
+				product.NomeComercial.toLowerCase().includes(searchTerm) ||
+				product.Descricao.toLowerCase().includes(searchTerm) ||
+				(product.Referencia && product.Referencia.toString().toLowerCase().includes(searchTerm));
 			const matchesGama = selectedGamas.length > 0 ? selectedGamas.includes(product.Produto) : true;
 			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.some(gas => (product.Gas || '').includes(gas)) : true;
 			const matchesAcea = selectedAceas.length > 0 ? selectedAceas.some(acea => (product.Funcionamento || '').includes(acea)) : true;
@@ -149,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		displayGroupedProducts(filteredProducts);
 		updateFilterStates(filteredProducts);
 	}
-
 
 	function updateFilterStates(filteredProducts) {
 		const filterContainers = [
@@ -230,12 +232,14 @@ document.addEventListener('DOMContentLoaded', () => {
 				const productCard = document.createElement('div');
 				productCard.className = 'col-xl-3 col-sm-6';
 
+				const nomeComercialLimitado = product.NomeComercial.length > 40 ? product.NomeComercial.substring(0, 37) + '...' : product.NomeComercial;
+
 				// Card original com visual restaurado
 				productCard.innerHTML = `
                     <div class="card">
                         <div class="product-box">
                             <div class="product-img" style="text-align: center; text-align: -webkit-center">
-                                <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif'}" alt="${
+                                <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/PICCOLA_R744.jpg'}" alt="${
 					product.NomeComercial
 				}" style="height: 250px; object-fit: contain" />
                             </div>
@@ -256,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div class="product-details text-center">
                                 <div class="blog-details-main" style="min-height: 40px; align-content: center">
-                                    <h6 class="blog-bottom-details mb-0">${product.NomeComercial}</h6>
+                                    <h6 class="blog-bottom-details mb-0">${nomeComercialLimitado}</h6>
                                 </div>
                             </div>
                             <ul class="list-group p-10">
@@ -342,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				button.className = 'btn btn-outline-primary';
 				button.type = 'button';
 				button.style = 'padding: 5px 10px; margin: 0.1rem;';
-				button.textContent = truncateString(product.Descricao || product.Referencia, 45); // Aqui 40 é o limite de caracteres
+				button.textContent = truncateString(product.Descricao || product.Referencia, 40); // Aqui 40 é o limite de caracteres
 
 				button.addEventListener('click', () => {
 					populateModal(product);
@@ -397,12 +401,20 @@ document.addEventListener('DOMContentLoaded', () => {
 		// Destaca as palavras e deixa o texto à frente com estilo normal
 		modalACEA.innerHTML = `<span style="font-weight: 600;color: #000;">Gás:</span> ${product.Gas || 'N/D'}`;
 		modalSEA.innerHTML = `<span style="font-weight: 600;color: #000;">Funcionamento:</span> ${product.Funcionamento || 'N/D'}`;
-		modalEspec.innerHTML = `<span style="font-weight: 600;color: #000;">Artigo Relacionado:</span> ${product.ArtigoRelacionado || 'N/D'}`;
+		modalEspec.innerHTML = `<span style="font-weight: 600;color: #000;">Artigo Relacionado:</span>`;
+
 		// modalAprov.innerHTML = `<span style="font-weight: 600;color: #000;">Aprovação Fabricante:</span> ${product.AprovacaoFabricante || ''}`;
 		// modalRecom.innerHTML = `<span style="font-weight: 600;color: #000;">Recomendação Fabricante:</span> ${product.RecomendacaoFabricanteOleo || ''}`;
 		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
 		modalImage.alt = product.DesignacaoComercial;
 
+		const artigosRelacionados = product.ArtigoRelacionado ? product.ArtigoRelacionado.split(';') : ['N/D'];
+
+		artigosRelacionados.forEach(artigo => {
+			const p = document.createElement('p');
+			p.textContent = artigo.trim().replace('£', ' - '); // Substitui "£" por " - "
+			modalEspec.appendChild(p);
+		});
 		// Verifica se há um link de Ficha de Segurança
 		if (product.FichaTecnica) {
 			modalFichaSeguranca.href = product.FichaTecnica; // Define o link
