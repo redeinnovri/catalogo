@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const aceas = [...new Set(products.flatMap(p => (p.Funcionamento ? p.Funcionamento.split(';') : [])))].sort();
 		const marcas = [...new Set(products.map(p => String(p.Marca).trim()))].sort();
 		// const aprovacoes = [...new Set(products.flatMap(p => (p.ArtigoRelacionado ? p.ArtigoRelacionado : [])))].sort();
-		const aprovacoes = [...new Set(products.flatMap(p => (p.ArtigoRelacionado ? p.ArtigoRelacionado.split(';') : [])))].sort();
+		const aprovacoes = [...new Set(products.flatMap(p => (p.ArtigoRelacionado ? p.ArtigoRelacionado.replace(/£/g, ' - ').split(';') : [])))].sort();
 
 		// Remove valores em branco ("" ou strings vazias)
 		populateDropdown(
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			const matchesAprovacoes =
 				selectedAprovacoes.length > 0
 					? selectedAprovacoes.some(aprovacao => {
-							const relacionados = product.ArtigoRelacionado ? product.ArtigoRelacionado.split(';') : [];
+							const relacionados = product.ArtigoRelacionado ? product.ArtigoRelacionado.replace(/£/g, ' - ').split(';') : [];
 							return relacionados.some(artigo => artigo.trim().toUpperCase() === aprovacao.toUpperCase());
 					  })
 					: true;
@@ -171,7 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
 					if (Array.isArray(prop)) {
 						// Para arrays (ex: AprovacaoFabricante e RecomendacaoFabricanteOleo), verifica em ambos
 						return prop.some(p => {
-							const productValue = (product[p] || '').toString().toUpperCase(); // Normaliza para string e uppercase
+							let productValue = (product[p] || '').toString().toUpperCase(); // Normaliza para string e uppercase
+
+							// Substitui o símbolo "£" por " - " no valor do produto
+							productValue = productValue.replace(/£/g, ' - ');
 
 							// Verifica se o valor contém um ";", aplicando a verificação extra
 							if (productValue.includes(';')) {
@@ -184,7 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
 						});
 					} else {
 						// Para propriedades simples, aplica a mesma lógica
-						const productValue = (product[prop] || '').toString().toUpperCase(); // Normaliza para string e uppercase
+						let productValue = (product[prop] || '').toString().toUpperCase(); // Normaliza para string e uppercase
+
+						// Substitui o símbolo "£" por " - " no valor do produto
+						productValue = productValue.replace(/£/g, ' - ');
 
 						// Verifica se o valor contém um ";", aplicando a verificação extra
 						if (productValue.includes(';')) {
@@ -200,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (filteredCount === 0) {
 					checkbox.parentElement.classList.add('no-results');
 					checkbox.disabled = true; // Desativa o checkbox se não houver resultados
-					checkbox.parentElement.style.opacity = 0.3; // Reduz a opacidade para dar feedback visual
+					checkbox.parentElement.style.opacity = 0.8; // Reduz a opacidade para dar feedback visual
 				} else {
 					checkbox.parentElement.classList.remove('no-results');
 					checkbox.disabled = false; // Ativa o checkbox se houver resultados
@@ -239,9 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="card">
                         <div class="product-box">
                             <div class="product-img" style="text-align: center; text-align: -webkit-center">
-                                <img class="img-fluid" src="${
-																	product.imgUrl || 'https://raw.githubusercontent.com/redeinnovri/catalogo/refs/heads/main/assets/images/dashboard-3/product/PICCOLA_R744.jpg'
-																}" alt="${product.NomeComercial}" style="height: 250px; object-fit: contain" />
+                                <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif'}" alt="${
+					product.NomeComercial
+				}" style="height: 250px; object-fit: contain" />
                             </div>
                             <div class="user-profile">
                                 <div class="hovercard">
@@ -403,18 +409,38 @@ document.addEventListener('DOMContentLoaded', () => {
 		modalSEA.innerHTML = `<span style="font-weight: 600;color: #000;">Funcionamento:</span> ${product.Funcionamento || 'N/D'}`;
 		modalEspec.innerHTML = `<span style="font-weight: 600;color: #000;">Artigo Relacionado:</span>`;
 
-		// modalAprov.innerHTML = `<span style="font-weight: 600;color: #000;">Aprovação Fabricante:</span> ${product.AprovacaoFabricante || ''}`;
-		// modalRecom.innerHTML = `<span style="font-weight: 600;color: #000;">Recomendação Fabricante:</span> ${product.RecomendacaoFabricanteOleo || ''}`;
 		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
 		modalImage.alt = product.DesignacaoComercial;
 
 		const artigosRelacionados = product.ArtigoRelacionado ? product.ArtigoRelacionado.split(';') : ['N/D'];
 
+		// Limpa o conteúdo anterior para evitar duplicação
+		modalEspec.innerHTML = `<span style="font-weight: 600;color: #000;">Artigo Relacionado:</span>`;
+
 		artigosRelacionados.forEach(artigo => {
 			const p = document.createElement('p');
-			p.textContent = artigo.trim().replace('£', ' - '); // Substitui "£" por " - "
+			// Divide o artigo em antes e depois do símbolo "£"
+			const partesArtigo = artigo.trim().split('£');
+			const artigoAntes = partesArtigo[0]; // Parte antes do "£"
+			const artigoDepois = partesArtigo[1] ? ` - ${partesArtigo[1].trim()}` : ''; // Parte depois do "£"
+
+			// Texto completo com " - " no lugar de "£"
+			p.textContent = artigoAntes + artigoDepois;
+
+			// Verifica se o artigo não é "N/D" antes de adicionar a classe
+			if (artigo.trim() !== 'N/D') {
+				// Adiciona a classe para estilo se não for "N/D"
+				p.classList.add('artigo-relacionado');
+
+				// Adiciona um event listener para copiar o texto antes do "£" ao clicar
+				p.addEventListener('click', () => {
+					copyToClipboard(artigoAntes); // Função para copiar o texto antes do "£"
+				});
+			}
+
 			modalEspec.appendChild(p);
 		});
+
 		// Verifica se há um link de Ficha de Segurança
 		if (product.FichaTecnica) {
 			modalFichaSeguranca.href = product.FichaTecnica; // Define o link
@@ -423,7 +449,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			modalFichaSeguranca.style.pointerEvents = 'auto'; // Reativa o botão
 			modalFichaSeguranca.classList.remove('disabled'); // Remove a classe desativada
 		} else {
-			// Se não houver link, desativa o botão ou remove o href
 			modalFichaSeguranca.removeAttribute('href');
 			modalFichaSeguranca.style.pointerEvents = 'none'; // Evita que o botão seja clicável
 			modalFichaSeguranca.classList.add('disabled'); // Opcional: adiciona uma classe para indicar desativação
@@ -437,16 +462,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		// Função separada para copiar o preço
 		function copyPriceToClipboard() {
-			navigator.clipboard
-				.writeText(modalPrice.textContent)
-				.then(() => {
-					// Sucesso ao copiar
-					console.log('Copiado com sucesso!');
-				})
-				.catch(err => {
-					// Falha ao copiar
-					console.error('Erro ao copiar: ', err);
-				});
+			copyToClipboard(modalPrice.textContent);
+		}
+
+		// Função para copiar para o clipboard
+		function copyToClipboard(text) {
+			if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+				// Se o método writeText estiver disponível, copia o texto
+				navigator.clipboard
+					.writeText(text)
+					.then(() => {
+						console.log('Texto copiado com sucesso!');
+					})
+					.catch(err => {
+						console.error('Falha ao copiar o texto: ', err);
+					});
+			} else {
+				// Caso o Clipboard API não esteja disponível, use um fallback
+				const textArea = document.createElement('textarea');
+				textArea.value = text;
+				document.body.appendChild(textArea);
+				textArea.select();
+				try {
+					document.execCommand('copy');
+					console.log('Texto copiado (fallback)!');
+				} catch (err) {
+					console.error('Falha ao copiar o texto (fallback): ', err);
+				}
+				document.body.removeChild(textArea);
+			}
 		}
 	}
 

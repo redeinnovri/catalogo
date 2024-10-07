@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (filteredCount === 0) {
 					checkbox.parentElement.classList.add('no-results');
 					checkbox.disabled = true; // Desativa o checkbox se não houver resultados
-					checkbox.parentElement.style.opacity = 0.7; // Reduz a opacidade para dar feedback visual
+					checkbox.parentElement.style.opacity = 0.8; // Reduz a opacidade para dar feedback visual
 				} else {
 					checkbox.parentElement.classList.remove('no-results');
 					checkbox.disabled = false; // Ativa o checkbox se houver resultados
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="card">
                         <div class="product-box">
                             <div class="product-img" style="text-align: center; text-align: -webkit-center">
-                                <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif'}" alt="${
+                                <img class="img-fluid" src="${product.ImgUrl || '../assets/images/dashboard-3/product/semimagem.gif'}" alt="${
 					product.DesignacaoComercial
 				}" style="height: 250px; object-fit: contain" />
                             </div>
