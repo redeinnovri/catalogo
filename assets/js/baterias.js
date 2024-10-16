@@ -13,6 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
 	const filterAcea = document.getElementById('filter-acea');
 	const filterMarca = document.getElementById('filter-marca');
 	const filterAprovacao = document.getElementById('filter-aprovacao');
+	const filterTerminal = document.getElementById('filter-terminal');
+	const filterWh = document.getElementById('filter-wh');
+	const filterCapAh = document.getElementById('filter-capah');
+	const filterCCAaEN = document.getElementById('filter-ccaaen');
+	const filterComprimento = document.getElementById('filter-comprimento');
+	const filterLargura = document.getElementById('filter-largura');
+	const filterAltura = document.getElementById('filter-altura');
 	const resetFilters = document.getElementById('reset-filters');
 	const productGrid = document.getElementById('product-grid');
 	const noResults = document.getElementById('no-results');
@@ -20,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let products = [];
 
 	// Fetch JSON data
-	fetch('https://ruifgcosta.github.io/ecommerceapi/motulapi.json')
+	fetch('https://ruifgcosta.github.io/ecommerceapi/baterias.json')
 		.then(response => response.json())
 		.then(data => {
 			products = data;
@@ -31,20 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Popula os filtros com checkboxes
 	function populateFilters(products) {
-		const gamas = [...new Set(products.map(p => String(p.Gama).trim()))].sort();
-		const viscosidades = [...new Set(products.map(p => String(p.ViscosidadeSAE).trim()))].sort();
-		const aceas = [...new Set(products.flatMap(p => (p.EspecificacaoACEA ? p.EspecificacaoACEA.split('; ') : [])))].sort();
+		const gamas = [...new Set(products.flatMap(p => (p.Segmento ? p.Segmento.split(';') : [])))].sort();
+
+		const viscosidades = [...new Set(products.map(p => String(p.Tecnologia).trim()))].sort();
+		const aceas = [...new Set(products.map(p => String(p.Bloco).trim()))].sort();
 		const marcas = [...new Set(products.map(p => String(p.Marca).trim()))].sort();
 
-		const aprovacoes = [
-			...new Set(
-				products.flatMap(p => {
-					const aprovacaoFabricante = p.AprovacaoFabricante ? p.AprovacaoFabricante.split(';').map(a => a.trim().toUpperCase()) : [];
-					const recomendacaoFabricanteOleo = p.RecomendacaoFabricanteOleo ? p.RecomendacaoFabricanteOleo.split(';').map(r => r.trim().toUpperCase()) : [];
-					return [...aprovacaoFabricante, ...recomendacaoFabricanteOleo];
-				}),
-			),
-		].sort((a, b) => a.localeCompare(b));
+		const aprovacoes = [...new Set(products.map(p => String(p.EsqLigacao).trim()))].sort();
+		const terminal = [...new Set(products.map(p => String(p.Terminal).trim()))].sort();
+		const wh = [...new Set(products.map(p => String(p.Wh).trim()))].sort();
+		const capah = [...new Set(products.map(p => String(p.CapAh).trim()))].sort();
+		const ccaaen = [...new Set(products.map(p => String(p.CCAaEN).trim()))].sort();
+		const comprimento = [...new Set(products.map(p => String(p.Comprimento).trim()))].sort();
+		const largura = [...new Set(products.map(p => String(p.Largura).trim()))].sort();
+		const altura = [...new Set(products.map(p => String(p.Altura).trim()))].sort();
 
 		// Remove valores em branco ("" ou strings vazias)
 		populateDropdown(
@@ -71,6 +78,41 @@ document.addEventListener('DOMContentLoaded', () => {
 			filterAprovacao,
 			aprovacoes.filter(a => a !== ''),
 			'aprovacaoSearch',
+		);
+		populateDropdown(
+			filterTerminal,
+			terminal.filter(a => a !== ''),
+			'terminalSearch',
+		);
+		populateDropdown(
+			filterWh,
+			wh.filter(a => a !== ''),
+			'whSearch',
+		);
+		populateDropdown(
+			filterCapAh,
+			capah.filter(a => a !== ''),
+			'capahSearch',
+		);
+		populateDropdown(
+			filterCCAaEN,
+			ccaaen.filter(a => a !== ''),
+			'ccaaenSearch',
+		);
+		populateDropdown(
+			filterComprimento,
+			comprimento.filter(a => a !== ''),
+			'comprimentoSearch',
+		);
+		populateDropdown(
+			filterLargura,
+			largura.filter(a => a !== ''),
+			'larguraSearch',
+		);
+		populateDropdown(
+			filterAltura,
+			altura.filter(a => a !== ''),
+			'alturaSearch',
 		);
 	}
 
@@ -134,22 +176,49 @@ document.addEventListener('DOMContentLoaded', () => {
 		const selectedAceas = getSelectedCheckboxes(filterAcea);
 		const selectedMarcas = getSelectedCheckboxes(filterMarca);
 		const selectedAprovacoes = getSelectedCheckboxes(filterAprovacao);
+		const selectedTerminal = getSelectedCheckboxes(filterTerminal);
+		const selectedWh = getSelectedCheckboxes(filterWh);
+		const selectedCapAh = getSelectedCheckboxes(filterCapAh);
+		const selectedCCAaEN = getSelectedCheckboxes(filterCCAaEN);
+		const selectedComprimento = getSelectedCheckboxes(filterComprimento);
+		const selectedLargura = getSelectedCheckboxes(filterLargura);
+		const selectedAltura = getSelectedCheckboxes(filterAltura);
 
 		const filteredProducts = products.filter(product => {
 			const matchesSearch =
-				product.DesignacaoComercial.toLowerCase().includes(searchTerm) ||
+				product.Referencia.toLowerCase().includes(searchTerm) ||
 				product.Descricao.toLowerCase().includes(searchTerm) ||
 				(product.Referencia && product.Referencia.toString().toLowerCase().includes(searchTerm));
-			const matchesGama = selectedGamas.length > 0 ? selectedGamas.includes(product.Gama) : true;
-			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.includes((product.ViscosidadeSAE || '').toString().trim()) : true;
-			const matchesAcea = selectedAceas.length > 0 ? selectedAceas.some(acea => (product.EspecificacaoACEA || '').includes(acea)) : true;
+			// const matchesGama1 = selectedGamas.length > 0 ? selectedGamas.includes(product.Segmento) : true;
+			const matchesGama = selectedGamas.length > 0 ? selectedGamas.some(segmento => (product.Segmento || '').includes(segmento)) : true;
+			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.includes((product.Tecnologia || '').toString().trim()) : true;
+			const matchesAcea = selectedAceas.length > 0 ? selectedAceas.includes((product.Bloco || '').toString().trim()) : true;
 			const matchesMarcas = selectedMarcas.length > 0 ? selectedMarcas.includes(product.Marca) : true;
-			const matchesAprovacoes =
-				selectedAprovacoes.length > 0
-					? selectedAprovacoes.some(aprov => (product.AprovacaoFabricante || '').toUpperCase().includes(aprov) || (product.RecomendacaoFabricanteOleo || '').toUpperCase().includes(aprov))
-					: true;
+			const matchesAprovacoes = selectedAprovacoes.length > 0 ? selectedAprovacoes.includes((product.EsqLigacao || '').toString().trim()) : true;
+			const matchesTerminal = selectedTerminal.length > 0 ? selectedTerminal.includes((product.Terminal || '').toString().trim()) : true;
+			const matchesWh = selectedWh.length > 0 ? selectedWh.includes((product.Wh || '').toString().trim()) : true;
+			const matchesCapAh = selectedCapAh.length > 0 ? selectedCapAh.includes((product.CapAh || '').toString().trim()) : true;
+			const matchesCCAaEN = selectedCCAaEN.length > 0 ? selectedCCAaEN.includes((product.CCAaEN || '').toString().trim()) : true;
 
-			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea && matchesMarcas && matchesAprovacoes;
+			const matchesComprimento = selectedComprimento.length > 0 ? selectedComprimento.includes((product.Comprimento || '').toString().trim()) : true;
+			const matchesLargura = selectedLargura.length > 0 ? selectedLargura.includes((product.Largura || '').toString().trim()) : true;
+			const matchesAltura = selectedAltura.length > 0 ? selectedAltura.includes((product.Altura || '').toString().trim()) : true;
+
+			return (
+				matchesSearch &&
+				matchesGama &&
+				matchesViscosidade &&
+				matchesAcea &&
+				matchesMarcas &&
+				matchesAprovacoes &&
+				matchesTerminal &&
+				matchesWh &&
+				matchesCapAh &&
+				matchesCCAaEN &&
+				matchesComprimento &&
+				matchesLargura &&
+				matchesAltura
+			);
 		});
 
 		// Função já existente para exibir os produtos filtrados
@@ -161,29 +230,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	function updateFilterStates(filteredProducts) {
 		const filterContainers = [
-			{ container: filterGama, prop: 'Gama' },
-			{ container: filterViscosidade, prop: 'ViscosidadeSAE' },
-			{ container: filterAcea, prop: 'EspecificacaoACEA' },
+			{ container: filterGama, prop: 'Segmento' },
+			{ container: filterViscosidade, prop: 'Tecnologia' },
+			{ container: filterAcea, prop: 'Bloco' },
 			{ container: filterMarca, prop: 'Marca' },
-			{ container: filterAprovacao, prop: ['AprovacaoFabricante', 'RecomendacaoFabricanteOleo'] },
+			{ container: filterAprovacao, prop: ['EsqLigacao'] },
+			{ container: filterTerminal, prop: ['Terminal'] },
+			{ container: filterWh, prop: ['Wh'] },
+			{ container: filterCapAh, prop: ['CapAh'] },
+			{ container: filterCCAaEN, prop: ['CCAaEN'] },
+			{ container: filterComprimento, prop: ['Comprimento'] },
+			{ container: filterLargura, prop: ['Largura'] },
+			{ container: filterAltura, prop: ['Altura'] },
 		];
 
 		filterContainers.forEach(({ container, prop }) => {
 			const checkboxes = container.querySelectorAll('input[type="checkbox"]');
 
 			checkboxes.forEach(checkbox => {
-				const filterValue = checkbox.value.trim(); // Garantir que não há espaços em branco
+				const filterValue = checkbox.value.trim().toUpperCase(); // Normaliza para maiúsculas
 				const filteredCount = filteredProducts.filter(product => {
 					if (Array.isArray(prop)) {
 						// Para arrays (ex: AprovacaoFabricante e RecomendacaoFabricanteOleo), verifica em ambos
 						return prop.some(p => {
-							const productValue = (product[p] || '').toString().toUpperCase(); // Normaliza para string e uppercase
-							return productValue.includes(filterValue.toUpperCase()); // Compara sem distinção de maiúsculas/minúsculas
+							const productValue = (product[p] || '').toString().toUpperCase();
+							return productValue.includes(filterValue);
 						});
 					} else {
-						// Para propriedades simples, compara como string sem distinção de maiúsculas/minúsculas
-						const productValue = (product[prop] || '').toString().toUpperCase(); // Normaliza para string e uppercase
-						return productValue === filterValue.toUpperCase();
+						let productValue = (product[prop] || '').toString().toUpperCase();
+						if (prop === 'Segmento') {
+							// Para Segmento, divide os valores separados por ';' e verifica individualmente
+							const segments = productValue.split(';').map(val => val.trim());
+							return segments.includes(filterValue); // Verifica se o filtro está na lista de segmentos
+						}
+						return productValue === filterValue;
 					}
 				}).length;
 
@@ -210,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		productGrid.innerHTML = '';
 
 		// Agrupar produtos por DesignacaoComercial
-		const groupedProducts = groupBy(products, 'DesignacaoComercial');
+		const groupedProducts = groupBy(products, 'Referencia');
 
 		if (Object.keys(groupedProducts).length === 0) {
 			noResults.style.display = 'block';
@@ -236,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="product-box">
                         <div class="product-img" style="text-align: center; text-align: -webkit-center">
                             <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif'}" alt="${
-					product.DesignacaoComercial
+					product.Descricao
 				}" style="height: 250px; object-fit: contain" />
                         </div>
                         <div class="user-profile">
@@ -256,17 +336,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="product-details text-center">
                             <div class="blog-details-main" style="min-height: 40px; align-content: center">
-                                <h6 class="blog-bottom-details mb-0">${product.DesignacaoComercial}</h6>
+                                <h6 class="blog-bottom-details mb-0">${product.Referencia} - ${product.Descricao}</h6>
                             </div>
                         </div>
                         <ul class="list-group p-10">
                             <li class="list-group-item d-flex align-items-start flex-wrap">
-                                <div class="ms-2 me-auto">SAE</div>
-                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.ViscosidadeSAE}</span>
+                                <div class="ms-2 me-auto">CAP. AH</div>
+                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.CapAh || 'N/D'}</span>
                             </li>
                             <li class="list-group-item d-flex align-items-start flex-wrap">
-                                <div class="ms-2 me-auto">ACEA</div>
-                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.EspecificacaoACEA || ''}</span>
+                                <div class="ms-2 me-auto">CCA A(EN)</div>
+                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.CCAaEN || 'N/D'}</span>
                             </li>
                         </ul>
                         <!-- Alert de substituição -->
@@ -310,6 +390,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		const aceaFilter = document.getElementById('filter-acea');
 		const marcaFilter = document.getElementById('filter-marca');
 		const aprovacaoFilter = document.getElementById('filter-aprovacao');
+		const terminalFilter = document.getElementById('filter-terminal');
+		const whFilter = document.getElementById('filter-wh');
+		const capAhFilter = document.getElementById('filter-capah');
+		const ccaAeNFilter = document.getElementById('filter-ccaaen');
+		const comprimentoFilter = document.getElementById('filter-comprimento');
+		const larguraFilter = document.getElementById('filter-largura');
+		const alturaFilter = document.getElementById('filter-altura');
 
 		// Limpa o conteúdo anterior dos filtros para evitar duplicações
 		gamaFilter.innerHTML = '';
@@ -317,6 +404,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		aceaFilter.innerHTML = '';
 		marcaFilter.innerHTML = '';
 		aprovacaoFilter.innerHTML = '';
+		terminalFilter.innerHTML = '';
+		whFilter.innerHTML = '';
+		capAhFilter.innerHTML = '';
+		ccaAeNFilter.innerHTML = '';
+		comprimentoFilter.innerHTML = '';
+		larguraFilter.innerHTML = '';
+		alturaFilter.innerHTML = '';
 
 		checkboxes.forEach(checkbox => (checkbox.checked = false));
 		inputquery.forEach(input => (input.value = ''));
@@ -351,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			button.className = 'btn btn-outline-primary';
 			button.type = 'button';
 			button.style = 'padding: 5px 10px; margin: 0.1rem;';
-			button.textContent = `${product.Capacidade + product.UnidadeMedida}`;
+			button.textContent = `${product.Referencia}`;
 			button.addEventListener('click', () => {
 				populateModal(product);
 				highlightButton(button);
@@ -391,11 +485,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		modalDescricao.innerHTML = `${product.Descricao}`;
 		// Destaca as palavras e deixa o texto à frente com estilo normal
-		modalACEA.innerHTML = `<span style="font-weight: 600;color: #000;">ACEA:</span> ${product.EspecificacaoACEA || ''}`;
-		modalSEA.innerHTML = `<span style="font-weight: 600;color: #000;">SAE:</span> ${product.ViscosidadeSAE || ''}`;
-		modalEspec.innerHTML = `<span style="font-weight: 600;color: #000;">Especificação:</span> ${product.Especificacao || ''}`;
-		modalAprov.innerHTML = `<span style="font-weight: 600;color: #000;">Aprovação Fabricante:</span> ${product.AprovacaoFabricante || ''}`;
-		modalRecom.innerHTML = `<span style="font-weight: 600;color: #000;">Recomendação Fabricante:</span> ${product.RecomendacaoFabricanteOleo || ''}`;
+		modalACEA.innerHTML = `<span style="font-weight: 600;color: #000;">Segmento:</span> ${product.Segmento || ''}`;
+		modalSEA.innerHTML = `<span style="font-weight: 600;color: #000;">Tecnologia:</span> ${product.Tecnologia || ''}`;
+		modalEspec.innerHTML = `<span style="font-weight: 600;color: #000;">Bloco:</span> ${product.Bloco || ''}`;
+		modalAprov.innerHTML = `<span style="font-weight: 600;color: #000;">Medidas (CxLxA):</span> ${product.Comprimento}x${product.Largura}x${product.Altura}`;
+		modalRecom.innerHTML = `<span style="font-weight: 600;color: #000;">Esp. Elétricas:</span> ${product.Wh ? product.Wh + 'Wh' : ''} ${product.CapAh ? product.CapAh + 'CapAh' : ''} ${
+			product.CCAaEN ? product.CCAaEN + 'CCAaEN' : ''
+		}`;
 		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
 		modalImage.alt = product.DesignacaoComercial;
 

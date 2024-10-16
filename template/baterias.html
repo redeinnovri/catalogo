@@ -30,6 +30,8 @@
 		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/animate.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/echart.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/date-picker.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/intltelinput.min.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/tagify.css" />
 		<!-- Plugins css Ends-->
 		<!-- Bootstrap css-->
 		<link rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css" />
@@ -38,6 +40,9 @@
 		<link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen" />
 		<!-- Responsive css-->
 		<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css" />
+		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	</head>
 	<body>
 		<!-- loader starts-->
@@ -521,7 +526,7 @@
 						<div class="page-title">
 							<div class="row">
 								<div class="col-6">
-									<h4>Catálogos</h4>
+									<h4>Catálogo de Baterias</h4>
 								</div>
 								<div class="col-6">
 									<ol class="breadcrumb">
@@ -533,84 +538,324 @@
 											</a>
 										</li>
 										<li class="breadcrumb-item">
-											<a href="links_uteis.html"> Links Úteis </a>
+											<a href="links_uteis.html">Links úteis</a>
 										</li>
 									</ol>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-xl-4 col-md-6 box-col-none">
-							<div class="row">
-								<div class="col-md-12 col-sm-6">
-									<div class="card boost-up-card overflow-hidden">
-										<div class="p-4">
-											<div class="boostup-name row">
-												<h6 class="text-white f-28 f-w-700 mb-2 z-1">Lubrificantes</h6>
-												<p class="text-white f-12 f-w-500 col-9 line-clamp">MOTUL - TOTALENERGIES - CGA</p>
-											</div>
-											<div class="img-boostup">
-												<img class="img-boostup-img-1" src="../assets/images/dashboard-3/boostup1.png" alt="boostup" /><img
-													class="img-boostup-img-2"
-													src="../assets/images/dashboard-3/boostup2.png"
-													alt="boostup"
-												/>
-											</div>
-											<div class="btn-showcase text-start">
-												<a href="motul_listagem_artigos.html"> <button class="btn btn-pill btn-outline-light-2x b-r-8" type="button">Ver Catálogo</button></a>
+					<!-- Container-fluid starts-->
+					<div class="container-fluid product-wrapper">
+						<div class="product-grid">
+							<!-- Linha para a barra de pesquisa e o botão de reset -->
+							<div class="row mb-1">
+								<div class="col-md-8">
+									<input class="form-control" id="search-bar" type="search" placeholder="Pesquisar..." />
+								</div>
+								<div class="col-md-4">
+									<button id="reset-filters" class="btn w-100">Limpar Filtros</button>
+								</div>
+							</div>
+
+							<!-- Filtros -->
+							<div id="filters" class="row mb-3">
+								<!-- Filtro de Marca -->
+								<div class="col-md-2">
+									<div class="dropdown">
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="marcaDropdown" data-bs-toggle="dropdown" aria-expanded="false">Marca</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="marcaDropdown">
+											<input type="text" id="marcaSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-marca" class="checkbox-list">
+												<!-- Checkboxes de marca serão populados aqui -->
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-6 box-col-none">
-							<div class="row">
-								<div class="col-md-12 col-sm-6">
-									<div class="card boost-up-card overflow-hidden">
-										<div class="p-4">
-											<div class="boostup-name row">
-												<h6 class="text-white f-28 f-w-700 mb-2 z-1">Ar Condicionado</h6>
-												<p class="text-white f-12 f-w-500 col-9 line-clamp">CTR - WIGAM</p>
-											</div>
-											<div class="img-boostup">
-												<img class="img-boostup-img-1" src="../assets/images/dashboard-3/boostup1.png" alt="boostup" /><img
-													class="img-boostup-img-2"
-													src="../assets/images/dashboard-3/boostup2.png"
-													alt="boostup"
-												/>
-											</div>
-											<div class="btn-showcase text-start">
-												<a href="arcondicionado.html"> <button class="btn btn-pill btn-outline-light-2x b-r-8" type="button">Ver Catálogo</button></a>
+
+								<!-- Filtro de Gama -->
+								<div class="col-md-2">
+									<div class="dropdown">
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="gamaDropdown" data-bs-toggle="dropdown" aria-expanded="false">Segmento</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="gamaDropdown">
+											<input type="text" id="gamaSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-gama" class="checkbox-list">
+												<!-- Checkboxes de gama serão populados aqui -->
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-6 box-col-none">
-							<div class="row">
-								<div class="col-md-12 col-sm-6">
-									<div class="card boost-up-card overflow-hidden">
-										<div class="p-4">
-											<div class="boostup-name row">
-												<h6 class="text-white f-28 f-w-700 mb-2 z-1">Ferramentas</h6>
-												<p class="text-white f-12 f-w-500 col-9 line-clamp">&nbsp;</p>
+
+								<!-- Filtro de Viscosidade -->
+								<div class="col-md-3">
+									<div class="dropdown">
+										<button
+											class="btn btn-filter dropdown-toggle w-100"
+											type="button"
+											id="viscosidadeDropdown"
+											data-bs-toggle="dropdown"
+											aria-expanded="false"
+											style="text-overflow: ellipsis; overflow: hidden"
+										>
+											Tecnologia
+										</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="viscosidadeDropdown">
+											<input type="text" id="viscosidadeSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-viscosidade" class="checkbox-list">
+												<!-- Checkboxes de viscosidade serão populados aqui -->
 											</div>
-											<div class="img-boostup">
-												<img class="img-boostup-img-1" src="../assets/images/dashboard-3/boostup1.png" alt="boostup" /><img
-													class="img-boostup-img-2"
-													src="../assets/images/dashboard-3/boostup2.png"
-													alt="boostup"
-												/>
+										</div>
+									</div>
+								</div>
+
+								<!-- Filtro de ACEA -->
+								<div class="col-md-1">
+									<div class="dropdown">
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="aceaDropdown" data-bs-toggle="dropdown" aria-expanded="false">Bloco</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="aceaDropdown">
+											<input type="text" id="aceaSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-acea" class="checkbox-list">
+												<!-- Checkboxes de ACEA serão populados aqui -->
 											</div>
-											<div class="row">
-												<div class="col-6 btn-showcase text-start">
-													<a href="https://jbmcamp.com/pt/catalogo.html" target="_blank"> <button class="btn btn-pill btn-outline-light-2x b-r-8" type="button" style="width: 100%">JBM</button></a>
+										</div>
+									</div>
+								</div>
+
+								<!-- Filtro de Aprovação Fabricante -->
+								<div class="col-md-2">
+									<div class="dropdown">
+										<button
+											class="btn btn-filter dropdown-toggle w-100"
+											type="button"
+											id="aprovacaoDropdown"
+											data-bs-toggle="dropdown"
+											aria-expanded="false"
+											style="text-overflow: ellipsis; overflow: hidden"
+										>
+											Esq. Ligação
+										</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="aprovacaoDropdown">
+											<input type="text" id="aprovacaoSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-aprovacao" class="checkbox-list">
+												<!-- Checkboxes de aprovação serão populados aqui -->
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="dropdown">
+										<button
+											class="btn btn-filter dropdown-toggle w-100"
+											type="button"
+											id="terminalDropdown"
+											data-bs-toggle="dropdown"
+											aria-expanded="false"
+											style="text-overflow: ellipsis; overflow: hidden"
+										>
+											Terminal
+										</button>
+										<div class="dropdown-menu p-3 w-100" aria-labelledby="terminalDropdown">
+											<input type="text" id="terminalSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+											<div id="filter-terminal" class="checkbox-list">
+												<!-- Checkboxes de aprovação serão populados aqui -->
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="card-wrapper border rounded-3 input-radius">
+										<h6 class="f-14 mb-2">Esp. elétricas:</h6>
+										<div class="d-flex">
+											<div class="col-md-4">
+												<div class="dropdown">
+													<button
+														class="btn btn-filter dropdown-toggle w-100"
+														type="button"
+														id="whDropdown"
+														data-bs-toggle="dropdown"
+														aria-expanded="false"
+														style="text-overflow: ellipsis; overflow: hidden"
+													>
+														Wh
+													</button>
+													<div class="dropdown-menu p-3 w-100" aria-labelledby="whDropdown">
+														<input type="text" id="whSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+														<div id="filter-wh" class="checkbox-list">
+															<!-- Checkboxes de aprovação serão populados aqui -->
+														</div>
+													</div>
 												</div>
-												<div class="col-6 btn-showcase text-start">
-													<a href="https://www.kroftools.com/pt/" target="_blank"> <button class="btn btn-pill btn-outline-light-2x b-r-8" type="button" style="width: 100%">Kroftools</button></a>
+											</div>
+											<div class="col-md-4">
+												<div class="dropdown">
+													<button
+														class="btn btn-filter dropdown-toggle w-100"
+														type="button"
+														id="capahDropdown"
+														data-bs-toggle="dropdown"
+														aria-expanded="false"
+														style="text-overflow: ellipsis; overflow: hidden"
+													>
+														Cap Ah
+													</button>
+													<div class="dropdown-menu p-3 w-100" aria-labelledby="capahDropdown">
+														<input type="text" id="capahSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+														<div id="filter-capah" class="checkbox-list">
+															<!-- Checkboxes de aprovação serão populados aqui -->
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="dropdown">
+													<button
+														class="btn btn-filter dropdown-toggle w-100"
+														type="button"
+														id="ccaaenDropdown"
+														data-bs-toggle="dropdown"
+														aria-expanded="false"
+														style="text-overflow: ellipsis; overflow: hidden; margin-bottom: 0px !important"
+													>
+														CCA a (EN)
+													</button>
+													<div class="dropdown-menu p-3 w-100" aria-labelledby="ccaaenDropdown">
+														<input type="text" id="ccaaenSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+														<div id="filter-ccaaen" class="checkbox-list">
+															<!-- Checkboxes de aprovação serão populados aqui -->
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="card-wrapper border rounded-3 input-radius">
+										<h6 class="f-14 mb-2">Medidas:</h6>
+										<div class="d-flex">
+											<div class="col-md-4">
+												<div class="dropdown">
+													<button
+														class="btn btn-filter dropdown-toggle w-100"
+														type="button"
+														id="comprimentoDropdown"
+														data-bs-toggle="dropdown"
+														aria-expanded="false"
+														style="text-overflow: ellipsis; overflow: hidden"
+													>
+														Comprimento
+													</button>
+													<div class="dropdown-menu p-3 w-100" aria-labelledby="comprimentoDropdown">
+														<input type="text" id="comprimentoSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+														<div id="filter-comprimento" class="checkbox-list">
+															<!-- Checkboxes de aprovação serão populados aqui -->
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="dropdown">
+													<button
+														class="btn btn-filter dropdown-toggle w-100"
+														type="button"
+														id="larguraDropdown"
+														data-bs-toggle="dropdown"
+														aria-expanded="false"
+														style="text-overflow: ellipsis; overflow: hidden"
+													>
+														Largura
+													</button>
+													<div class="dropdown-menu p-3 w-100" aria-labelledby="larguraDropdown">
+														<input type="text" id="larguraSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+														<div id="filter-largura" class="checkbox-list">
+															<!-- Checkboxes de aprovação serão populados aqui -->
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="dropdown">
+													<button
+														class="btn btn-filter dropdown-toggle w-100"
+														type="button"
+														id="alturaDropdown"
+														data-bs-toggle="dropdown"
+														aria-expanded="false"
+														style="text-overflow: ellipsis; overflow: hidden; margin-bottom: 0px !important"
+													>
+														Altura
+													</button>
+													<div class="dropdown-menu p-3 w-100" aria-labelledby="alturaDropdown">
+														<input type="text" id="alturaSearch" class="form-control mb-2" placeholder="Pesquisar..." />
+														<div id="filter-altura" class="checkbox-list">
+															<!-- Checkboxes de aprovação serão populados aqui -->
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Mensagem de nenhum resultado encontrado -->
+							<div id="no-results" class="text-center my-3" style="display: none">Sem resultados encontrados, tente outra pesquisa...</div>
+
+							<!-- Grid de produtos -->
+							<div class="product-wrapper-grid">
+								<div class="row" id="product-grid">
+									<!-- Os cards dos produtos serão inseridos aqui dinamicamente -->
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Container-fluid Ends-->
+					<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalCenterTitle"></h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-header" style="position: relative; flex: 1 1 auto; padding: var(--bs-modal-padding); display: unset">
+									<div class="product-box row align-items-center">
+										<div class="product-img col-lg-6" style="text-align: center; justify-content: center; height: 250px; display: flex">
+											<img class="img-fluid" id="modal-image" src="../assets/images/ecommerce/01.jpg" alt="" style="max-height: 100%; max-width: 100%; object-fit: contain" />
+										</div>
+										<div class="product-details col-lg-6 text-start">
+											<div class="row flex col-12">
+												<i class="fa fa-copy col-1" id="copy-price-btn" style="align-content: center; cursor: pointer"></i>
+												<div class="product-price col-9" id="modal-price">
+													<!-- Preço será atualizado aqui -->
+												</div>
+											</div>
+
+											<div class="product-view">
+												<h6 class="f-w-600"></h6>
+												<p class="mb-1 referencia-substituta" id="referencia-substituta"></p>
+												<p class="mb-1 acea" id="modal-acea"></p>
+												<p class="mb-1 sea" id="modal-sea"></p>
+												<p class="mb-1 especificacao" id="modal-especificacao"></p>
+												<p class="mb-1 aprovacao" id="modal-aprovacao"></p>
+												<p class="mb-1 recomendacao" id="modal-recomendacao"></p>
+											</div>
+											<div class="modal-body mt-4" id="modal-descricao" style="padding: 5px 0px 5px 0px">
+												<!-- Descrição será atualizada aqui -->
+											</div>
+											<div class="product-qnty">
+												<div class="addcart-btn">
+													<!-- <button
+														class="example-popover btn btn-primary mb-0 me-0"
+														type="button"
+														data-container="body"
+														data-bs-toggle="tooltip"
+														data-bs-placement="top"
+														title="Aqui aparece imagem a explicar!"
+													>
+														?
+													</button> -->
+													<a class="btn btn-primary" href="https://www.motul.com/pt-PT/lubricants" target="_blank" id="fichaseguranca">Ficha Técnica/Segurança</a>
 												</div>
 											</div>
 										</div>
@@ -620,6 +865,7 @@
 						</div>
 					</div>
 				</div>
+
 				<!-- footer start-->
 				<footer class="footer">
 					<div class="container-fluid">
@@ -632,8 +878,10 @@
 				</footer>
 			</div>
 		</div>
+
 		<!-- latest jquery-->
 		<script src="../assets/js/jquery.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<!-- Bootstrap js-->
 		<script src="../assets/js/bootstrap/bootstrap.bundle.min.js"></script>
 		<!-- feather icon js-->
@@ -650,22 +898,10 @@
 		<script src="../assets/js/slick/slick.min.js"></script>
 		<script src="../assets/js/slick/slick.js"></script>
 		<script src="../assets/js/header-slick.js"></script>
-		<script src="../assets/js/chart/apex-chart/apex-chart.js"></script>
-		<script src="../assets/js/chart/apex-chart/stock-prices.js"></script>
-		<script src="../assets/js/chart/apex-chart/moment.min.js"></script>
-		<script src="../assets/js/chart/echart/esl.js"></script>
-		<script src="../assets/js/chart/echart/config.js"></script>
-		<script src="../assets/js/chart/echart/pie-chart/facePrint.js"></script>
-		<script src="../assets/js/chart/echart/pie-chart/testHelper.js"></script>
-		<script src="../assets/js/chart/echart/pie-chart/custom-transition-texture.js"></script>
-		<script src="../assets/js/chart/echart/data/symbols.js"></script>
-		<!-- calendar js-->
-		<script src="../assets/js/datepicker/date-picker/datepicker.js"></script>
-		<script src="../assets/js/datepicker/date-picker/datepicker.en.js"></script>
-		<script src="../assets/js/datepicker/date-picker/datepicker.custom.js"></script>
-		<script src="../assets/js/dashboard/dashboard_3.js"></script>
 		<!-- Plugins JS Ends-->
+
 		<!-- Theme js-->
 		<script src="../assets/js/script.js"></script>
+		<script src="../assets/js/baterias.js"></script>
 	</body>
 </html>

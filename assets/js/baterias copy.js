@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let products = [];
 
 	// Fetch JSON data
-	fetch('https://ruifgcosta.github.io/ecommerceapi/motulapi.json')
+	fetch('https://ruifgcosta.github.io/ecommerceapi/baterias.json')
 		.then(response => response.json())
 		.then(data => {
 			products = data;
@@ -31,20 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Popula os filtros com checkboxes
 	function populateFilters(products) {
-		const gamas = [...new Set(products.map(p => String(p.Gama).trim()))].sort();
-		const viscosidades = [...new Set(products.map(p => String(p.ViscosidadeSAE).trim()))].sort();
-		const aceas = [...new Set(products.flatMap(p => (p.EspecificacaoACEA ? p.EspecificacaoACEA.split('; ') : [])))].sort();
+		const gamas = [...new Set(products.flatMap(p => (p.Segmento ? p.Segmento.split(';') : [])))].sort();
+		const viscosidades = [...new Set(products.map(p => String(p.Tecnologia).trim()))].sort();
+		const aceas = [...new Set(products.map(p => String(p.Bloco).trim()))].sort();
 		const marcas = [...new Set(products.map(p => String(p.Marca).trim()))].sort();
 
+		// Atualizamos a constante 'aprovacoes' para trazer 'Wh', 'CapAh' e 'CCAaEN'
 		const aprovacoes = [
-			...new Set(
-				products.flatMap(p => {
-					const aprovacaoFabricante = p.AprovacaoFabricante ? p.AprovacaoFabricante.split(';').map(a => a.trim().toUpperCase()) : [];
-					const recomendacaoFabricanteOleo = p.RecomendacaoFabricanteOleo ? p.RecomendacaoFabricanteOleo.split(';').map(r => r.trim().toUpperCase()) : [];
-					return [...aprovacaoFabricante, ...recomendacaoFabricanteOleo];
-				}),
-			),
-		].sort((a, b) => a.localeCompare(b));
+			{ label: 'Wh', options: [...new Set(products.map(p => String(p.Wh).trim()))].filter(v => v !== '').sort() },
+			{ label: 'CapAh', options: [...new Set(products.map(p => String(p.CapAh).trim()))].filter(v => v !== '').sort() },
+			{ label: 'CCAaEN', options: [...new Set(products.map(p => String(p.CCAaEN).trim()))].filter(v => v !== '').sort() },
+		];
 
 		// Remove valores em branco ("" ou strings vazias)
 		populateDropdown(
@@ -67,11 +64,69 @@ document.addEventListener('DOMContentLoaded', () => {
 			marcas.filter(m => m !== ''),
 			'marcaSearch',
 		);
-		populateDropdown(
-			filterAprovacao,
-			aprovacoes.filter(a => a !== ''),
-			'aprovacaoSearch',
-		);
+
+		// Função modificada para lidar com optgroups
+		populateDropdownWithOptgroups(filterAprovacao, aprovacoes, 'aprovacaoSearch');
+	}
+
+	// Função para popular dropdowns com optgroups
+	function populateDropdownWithOptgroups(container, groups, inputId) {
+		// Limpar o dropdown antes de preenchê-lo
+		container.innerHTML = '';
+
+		// Adiciona botão de reset ao topo de cada filtro, logo abaixo da barra de pesquisa
+		const resetButton = document.createElement('button');
+		resetButton.textContent = 'Limpar Filtros';
+		resetButton.classList.add('btn', 'btn-reset-filters-dropdown', 'w-100', 'mb-3');
+		resetButton.addEventListener('click', () => {
+			resetFilterCheckboxes(container); // Limpa os checkboxes desse filtro
+			filterAndSearch(); // Chama a função de filtragem após resetar
+		});
+
+		container.appendChild(resetButton); // Adiciona o botão antes das opções
+
+		// Iterar pelos grupos (Wh, CapAh, CCAaEN)
+		groups.forEach(group => {
+			// Cria um optgroup como um título (usando um elemento <div> para manter a estrutura flexível)
+			const groupLabel = document.createElement('div');
+			groupLabel.textContent = group.label;
+			groupLabel.classList.add('optgroup-label', 'mt-2', 'fw-bold'); // Classe para estilizar o título
+			container.appendChild(groupLabel);
+
+			// Adicionar opções dentro do grupo
+			group.options.forEach(option => {
+				const checkbox = document.createElement('input');
+				checkbox.type = 'checkbox';
+				checkbox.value = option;
+
+				// Listener para o evento de mudança do checkbox
+				checkbox.addEventListener('change', () => {
+					filterAndSearch(); // Filtra ao selecionar/deselecionar
+				});
+
+				checkbox.classList.add('form-check-input');
+
+				const label = document.createElement('label');
+				label.textContent = option;
+				label.classList.add('form-check-label'); // Classe para estilização
+
+				const div = document.createElement('div');
+				div.classList.add('form-check', 'filter-option'); // Classe adicional para estilização
+
+				// Adiciona evento na div para marcar/desmarcar o checkbox ao clicar
+				div.addEventListener('click', () => {
+					checkbox.checked = !checkbox.checked; // Alterna entre marcado e desmarcado
+					checkbox.dispatchEvent(new Event('change')); // Dispara o evento de change manualmente
+				});
+
+				div.appendChild(checkbox);
+				div.appendChild(label);
+				container.appendChild(div); // Adiciona cada opção dentro do grupo
+			});
+		});
+
+		// Adiciona o evento de filtragem para o input de busca
+		setupFilterCheckboxes(inputId, container);
 	}
 
 	function populateDropdown(container, options, inputId) {
@@ -133,57 +188,69 @@ document.addEventListener('DOMContentLoaded', () => {
 		const selectedViscosidades = getSelectedCheckboxes(filterViscosidade);
 		const selectedAceas = getSelectedCheckboxes(filterAcea);
 		const selectedMarcas = getSelectedCheckboxes(filterMarca);
-		const selectedAprovacoes = getSelectedCheckboxes(filterAprovacao);
+		const selectedWh = getSelectedCheckboxesForSpecificField(filterAprovacao, 'Wh');
+		const selectedCapAh = getSelectedCheckboxesForSpecificField(filterAprovacao, 'CapAh');
+		const selectedCCAaEN = getSelectedCheckboxesForSpecificField(filterAprovacao, 'CCAaEN');
 
 		const filteredProducts = products.filter(product => {
 			const matchesSearch =
-				product.DesignacaoComercial.toLowerCase().includes(searchTerm) ||
+				product.Referencia.toLowerCase().includes(searchTerm) ||
 				product.Descricao.toLowerCase().includes(searchTerm) ||
 				(product.Referencia && product.Referencia.toString().toLowerCase().includes(searchTerm));
-			const matchesGama = selectedGamas.length > 0 ? selectedGamas.includes(product.Gama) : true;
-			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.includes((product.ViscosidadeSAE || '').toString().trim()) : true;
-			const matchesAcea = selectedAceas.length > 0 ? selectedAceas.some(acea => (product.EspecificacaoACEA || '').includes(acea)) : true;
-			const matchesMarcas = selectedMarcas.length > 0 ? selectedMarcas.includes(product.Marca) : true;
-			const matchesAprovacoes =
-				selectedAprovacoes.length > 0
-					? selectedAprovacoes.some(aprov => (product.AprovacaoFabricante || '').toUpperCase().includes(aprov) || (product.RecomendacaoFabricanteOleo || '').toUpperCase().includes(aprov))
-					: true;
 
-			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea && matchesMarcas && matchesAprovacoes;
+			const matchesGama = selectedGamas.length > 0 ? selectedGamas.some(segmento => (product.Segmento || '').includes(segmento)) : true;
+			const matchesViscosidade = selectedViscosidades.length > 0 ? selectedViscosidades.includes((product.Tecnologia || '').toString().trim()) : true;
+			const matchesAcea = selectedAceas.length > 0 ? selectedAceas.includes((product.Bloco || '').toString().trim()) : true;
+			const matchesMarcas = selectedMarcas.length > 0 ? selectedMarcas.includes(product.Marca) : true;
+
+			// Separando a comparação para cada campo específico
+			const matchesWh = selectedWh.length > 0 ? selectedWh.includes(String(product.Wh || '').toUpperCase()) : true;
+			const matchesCapAh = selectedCapAh.length > 0 ? selectedCapAh.includes(String(product.CapAh || '').toUpperCase()) : true;
+			const matchesCCAaEN = selectedCCAaEN.length > 0 ? selectedCCAaEN.includes(String(product.CCAaEN || '').toUpperCase()) : true;
+
+			// Apenas retorna verdadeiro se todos os filtros aplicados forem verdadeiros
+			return matchesSearch && matchesGama && matchesViscosidade && matchesAcea && matchesMarcas && matchesWh && matchesCapAh && matchesCCAaEN;
 		});
 
-		// Função já existente para exibir os produtos filtrados
 		displayGroupedProducts(filteredProducts);
-
-		// Aqui chamamos a função para atualizar o estado dos filtros
 		updateFilterStates(filteredProducts);
+	}
+
+	// Função para pegar checkboxes específicos de um campo
+	function getSelectedCheckboxesForSpecificField(container, fieldName) {
+		const checkboxes = container.querySelectorAll(`input[data-field="${fieldName}"]:checked`);
+		return Array.from(checkboxes).map(checkbox => checkbox.value);
 	}
 
 	function updateFilterStates(filteredProducts) {
 		const filterContainers = [
-			{ container: filterGama, prop: 'Gama' },
-			{ container: filterViscosidade, prop: 'ViscosidadeSAE' },
-			{ container: filterAcea, prop: 'EspecificacaoACEA' },
+			{ container: filterGama, prop: 'Segmento' },
+			{ container: filterViscosidade, prop: 'Tecnologia' },
+			{ container: filterAcea, prop: 'Bloco' },
 			{ container: filterMarca, prop: 'Marca' },
-			{ container: filterAprovacao, prop: ['AprovacaoFabricante', 'RecomendacaoFabricanteOleo'] },
+			{ container: filterAprovacao, prop: ['Wh', 'CapAh', 'CCAaEN'] },
 		];
 
 		filterContainers.forEach(({ container, prop }) => {
 			const checkboxes = container.querySelectorAll('input[type="checkbox"]');
 
 			checkboxes.forEach(checkbox => {
-				const filterValue = checkbox.value.trim(); // Garantir que não há espaços em branco
+				const filterValue = checkbox.value.trim().toUpperCase(); // Normaliza para maiúsculas
 				const filteredCount = filteredProducts.filter(product => {
 					if (Array.isArray(prop)) {
-						// Para arrays (ex: AprovacaoFabricante e RecomendacaoFabricanteOleo), verifica em ambos
+						// Para arrays (ex: Wh, CapAh, CCAaEN), verifica em cada campo individualmente
 						return prop.some(p => {
-							const productValue = (product[p] || '').toString().toUpperCase(); // Normaliza para string e uppercase
-							return productValue.includes(filterValue.toUpperCase()); // Compara sem distinção de maiúsculas/minúsculas
+							const productValue = (product[p] || '').toString().toUpperCase();
+							return productValue.includes(filterValue);
 						});
 					} else {
-						// Para propriedades simples, compara como string sem distinção de maiúsculas/minúsculas
-						const productValue = (product[prop] || '').toString().toUpperCase(); // Normaliza para string e uppercase
-						return productValue === filterValue.toUpperCase();
+						let productValue = (product[prop] || '').toString().toUpperCase();
+						if (prop === 'Segmento') {
+							// Para Segmento, divide os valores separados por ';' e verifica individualmente
+							const segments = productValue.split(';').map(val => val.trim());
+							return segments.includes(filterValue); // Verifica se o filtro está na lista de segmentos
+						}
+						return productValue === filterValue;
 					}
 				}).length;
 
@@ -210,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		productGrid.innerHTML = '';
 
 		// Agrupar produtos por DesignacaoComercial
-		const groupedProducts = groupBy(products, 'DesignacaoComercial');
+		const groupedProducts = groupBy(products, 'Referencia');
 
 		if (Object.keys(groupedProducts).length === 0) {
 			noResults.style.display = 'block';
@@ -236,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="product-box">
                         <div class="product-img" style="text-align: center; text-align: -webkit-center">
                             <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif'}" alt="${
-					product.DesignacaoComercial
+					product.Descricao
 				}" style="height: 250px; object-fit: contain" />
                         </div>
                         <div class="user-profile">
@@ -256,17 +323,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="product-details text-center">
                             <div class="blog-details-main" style="min-height: 40px; align-content: center">
-                                <h6 class="blog-bottom-details mb-0">${product.DesignacaoComercial}</h6>
+                                <h6 class="blog-bottom-details mb-0">${product.Referencia} - ${product.Descricao}</h6>
                             </div>
                         </div>
                         <ul class="list-group p-10">
                             <li class="list-group-item d-flex align-items-start flex-wrap">
-                                <div class="ms-2 me-auto">SAE</div>
-                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.ViscosidadeSAE}</span>
+                                <div class="ms-2 me-auto">CAP. AH</div>
+                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.CapAh || 'N/D'}</span>
                             </li>
                             <li class="list-group-item d-flex align-items-start flex-wrap">
-                                <div class="ms-2 me-auto">ACEA</div>
-                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.EspecificacaoACEA || ''}</span>
+                                <div class="ms-2 me-auto">CCA A(EN)</div>
+                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.CCAaEN || 'N/D'}</span>
                             </li>
                         </ul>
                         <!-- Alert de substituição -->
