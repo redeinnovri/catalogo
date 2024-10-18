@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		.then(response => response.json())
 		.then(data => {
 			campanhas = data;
+			// let campanhasreverse = campanhas.sort((a, b) => b.id - a.id);
 			renderCampanhas(campanhas);
 			renderDestaques(campanhas);
 		})
@@ -141,5 +142,24 @@ document.addEventListener('DOMContentLoaded', () => {
 		inputPesquisa.value = '';
 		radioTodas.checked = true;
 		renderCampanhas(campanhas);
+	});
+
+	document.getElementById('btnAtivas').addEventListener('click', () => {
+		const campanhasAtivas = campanhas.filter(c => calcularEstado(c.DataInicio, c.DataFim) === 'Ativa');
+		renderCampanhas(campanhasAtivas);
+	});
+
+	document.getElementById('btnDestaque').addEventListener('click', () => {
+		const campanhasDestaque = campanhas.filter(c => c.Destaque === 1);
+		renderCampanhas(campanhasDestaque);
+	});
+
+	document.getElementById('btnProximas').addEventListener('click', () => {
+		const campanhasProximas = campanhas.filter(c => calcularEstado(c.DataInicio, c.DataFim) === 'Brevemente');
+		renderCampanhas(campanhasProximas);
+	});
+
+	document.getElementById('btnLimpar').addEventListener('click', () => {
+		renderCampanhas(campanhas); // Limpar filtros e mostrar todas
 	});
 });

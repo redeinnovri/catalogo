@@ -36,6 +36,25 @@
 		<link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen" />
 		<!-- Responsive css-->
 		<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css" />
+		<style>
+			.filter-buttons {
+				display: flex;
+				justify-content: space-around;
+				margin-bottom: 15px;
+			}
+
+			.filter-buttons button {
+				flex: 1;
+				margin: 0 5px;
+			}
+
+			/* Esconder os botões em telas grandes */
+			@media (min-width: 1000px) {
+				.filter-buttons {
+					display: none;
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<!-- loader starts-->
@@ -588,9 +607,15 @@
 									</div>
 								</div>
 							</div>
+							<div class="filter-buttons d-lg-none">
+								<!-- Botões só aparecem em tablet e mobile -->
+								<button id="btnAtivas" class="btn btn-primary">Campanhas Ativas</button>
+								<button id="btnDestaque" class="btn btn-info">Campanhas em Destaque</button>
+								<button id="btnProximas" class="btn btn-warning">Próximas Campanhas</button>
+								<button id="btnLimpar" class="btn btn-light">Limpar Filtros</button>
+							</div>
 							<div class="col-xl-3 xl-40 box-col-12 learning-filter">
 								<div class="md-sidebar">
-									<a class="btn btn-primary email-aside-toggle md-sidebar-toggle">Filtrar Campanhas</a>
 									<div class="md-sidebar-aside job-sidebar">
 										<div class="default-according style-1 faq-accordion job-accordion" id="accordionoc">
 											<div class="row">
