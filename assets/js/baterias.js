@@ -120,12 +120,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		// Filtra valores em branco antes de popular o filtro
 		options = options.filter(option => option !== 'undefined' && option.trim() !== '');
 
+		// Assumindo que o botão do dropdown tem o mesmo id que o container, mas com um sufixo diferente, por exemplo 'filter-gama-button'
+		const dropdownButton = document.getElementById(`${container.id}-button`);
+
 		// Adiciona botão de reset ao topo de cada filtro, logo abaixo da barra de pesquisa
 		const resetButton = document.createElement('button');
 		resetButton.textContent = 'Limpar Filtros';
 		resetButton.classList.add('btn', 'btn-reset-filters-dropdown', 'w-100', 'mb-3');
 		resetButton.addEventListener('click', () => {
 			resetFilterCheckboxes(container); // Limpa os checkboxes desse filtro
+			updateDropdownButton(dropdownButton, container); // Atualiza a cor do botão após resetar
 		});
 
 		container.appendChild(resetButton); // Adiciona o botão antes das opções
@@ -134,7 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			const checkbox = document.createElement('input');
 			checkbox.type = 'checkbox';
 			checkbox.value = option;
-			checkbox.addEventListener('change', filterAndSearch); // Filtra ao selecionar/deselecionar
+			checkbox.addEventListener('change', () => {
+				filterAndSearch(); // Filtra ao selecionar/deselecionar
+				updateDropdownButton(dropdownButton, container); // Atualiza a cor do botão ao marcar/desmarcar
+			});
 			checkbox.classList.add('form-check-input');
 
 			const label = document.createElement('label');
@@ -159,12 +166,27 @@ document.addEventListener('DOMContentLoaded', () => {
 		setupFilterCheckboxes(inputId, container);
 	}
 
+	// Função para atualizar o background do botão do dropdown
+	function updateDropdownButton(button, container) {
+		const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+		const isAnyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+		// Se algum checkbox estiver marcado, aplica a classe 'active-filter' ao botão do dropdown
+		if (isAnyChecked) {
+			button.classList.add('active-filter-button');
+		} else {
+			button.classList.remove('active-filter-button');
+		}
+	}
+
 	function resetFilterCheckboxes(container) {
 		const checkboxes = container.querySelectorAll('input[type="checkbox"]');
 		checkboxes.forEach(checkbox => {
 			checkbox.checked = false; // Desmarca todos os checkboxes
 		});
 
+		const dropdownButton = document.getElementById(`${container.id}-button`);
+		updateDropdownButton(dropdownButton, container); // Atualiza a cor do botão após limpar os filtros
 		filterAndSearch(); // Atualiza a exibição dos produtos após limpar os filtros
 	}
 
@@ -384,6 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const searchbar = document.getElementById('search-bar');
 		const checkboxes = document.querySelectorAll('#filters input[type="checkbox"]');
 		const inputquery = document.querySelectorAll('#filters input[type="text"]');
+
 		// Obtém os containers dos filtros
 		const gamaFilter = document.getElementById('filter-gama');
 		const viscosidadeFilter = document.getElementById('filter-viscosidade');
@@ -412,10 +435,39 @@ document.addEventListener('DOMContentLoaded', () => {
 		larguraFilter.innerHTML = '';
 		alturaFilter.innerHTML = '';
 
+		// Desmarca os checkboxes e reseta os inputs
 		checkboxes.forEach(checkbox => (checkbox.checked = false));
 		inputquery.forEach(input => (input.value = ''));
 		searchbar.value = '';
+
+		// Chama a função para repopular os filtros
 		populateFilters(products);
+
+		// Obtém e reseta o estilo de todos os botões dos dropdowns correspondentes
+		const dropdownButtons = [
+			'filter-gama-button',
+			'filter-viscosidade-button',
+			'filter-acea-button',
+			'filter-marca-button',
+			'filter-aprovacao-button',
+			'filter-terminal-button',
+			'filter-wh-button',
+			'filter-capah-button',
+			'filter-ccaaen-button',
+			'filter-comprimento-button',
+			'filter-largura-button',
+			'filter-altura-button',
+		];
+
+		// Atualiza a cor de fundo dos botões de dropdown para o estilo padrão
+		dropdownButtons.forEach(buttonId => {
+			const dropdownButton = document.getElementById(buttonId);
+			if (dropdownButton) {
+				dropdownButton.classList.remove('active-filter-button');
+			}
+		});
+
+		// Reexibe os produtos após limpar os filtros
 		displayGroupedProducts(products);
 	});
 

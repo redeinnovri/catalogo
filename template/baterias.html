@@ -43,6 +43,11 @@
 		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+		<style>
+			.active-filter-button {
+				background-color: khaki; /* Ou qualquer cor que você desejar */
+			}
+		</style>
 	</head>
 	<body>
 		<!-- loader starts-->
@@ -563,7 +568,7 @@
 								<!-- Filtro de Marca -->
 								<div class="col-md-2">
 									<div class="dropdown">
-										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="marcaDropdown" data-bs-toggle="dropdown" aria-expanded="false">Marca</button>
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="filter-marca-button" data-bs-toggle="dropdown" aria-expanded="false">Marca</button>
 										<div class="dropdown-menu p-3 w-100" aria-labelledby="marcaDropdown">
 											<input type="text" id="marcaSearch" class="form-control mb-2" placeholder="Pesquisar..." />
 											<div id="filter-marca" class="checkbox-list">
@@ -576,7 +581,7 @@
 								<!-- Filtro de Gama -->
 								<div class="col-md-2">
 									<div class="dropdown">
-										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="gamaDropdown" data-bs-toggle="dropdown" aria-expanded="false">Segmento</button>
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="filter-gama-button" data-bs-toggle="dropdown" aria-expanded="false">Segmento</button>
 										<div class="dropdown-menu p-3 w-100" aria-labelledby="gamaDropdown">
 											<input type="text" id="gamaSearch" class="form-control mb-2" placeholder="Pesquisar..." />
 											<div id="filter-gama" class="checkbox-list">
@@ -592,7 +597,7 @@
 										<button
 											class="btn btn-filter dropdown-toggle w-100"
 											type="button"
-											id="viscosidadeDropdown"
+											id="filter-viscosidade-button"
 											data-bs-toggle="dropdown"
 											aria-expanded="false"
 											style="text-overflow: ellipsis; overflow: hidden"
@@ -611,7 +616,7 @@
 								<!-- Filtro de ACEA -->
 								<div class="col-md-1">
 									<div class="dropdown">
-										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="aceaDropdown" data-bs-toggle="dropdown" aria-expanded="false">Bloco</button>
+										<button class="btn btn-filter dropdown-toggle w-100" type="button" id="filter-acea-button" data-bs-toggle="dropdown" aria-expanded="false">Bloco</button>
 										<div class="dropdown-menu p-3 w-100" aria-labelledby="aceaDropdown">
 											<input type="text" id="aceaSearch" class="form-control mb-2" placeholder="Pesquisar..." />
 											<div id="filter-acea" class="checkbox-list">
@@ -627,12 +632,12 @@
 										<button
 											class="btn btn-filter dropdown-toggle w-100"
 											type="button"
-											id="aprovacaoDropdown"
+											id="filter-aprovacao-button"
 											data-bs-toggle="dropdown"
 											aria-expanded="false"
 											style="text-overflow: ellipsis; overflow: hidden"
 										>
-											Esq. Ligação
+											Disp. Pólos
 										</button>
 										<div class="dropdown-menu p-3 w-100" aria-labelledby="aprovacaoDropdown">
 											<input type="text" id="aprovacaoSearch" class="form-control mb-2" placeholder="Pesquisar..." />
@@ -647,7 +652,7 @@
 										<button
 											class="btn btn-filter dropdown-toggle w-100"
 											type="button"
-											id="terminalDropdown"
+											id="filter-terminal-button"
 											data-bs-toggle="dropdown"
 											aria-expanded="false"
 											style="text-overflow: ellipsis; overflow: hidden"
@@ -662,16 +667,16 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-6">
+								<div class="col-lg-6 col-md-12">
 									<div class="card-wrapper border rounded-3 input-radius">
 										<h6 class="f-14 mb-2">Esp. elétricas:</h6>
 										<div class="d-flex">
-											<div class="col-md-4">
+											<div class="col-md-4 col-sm-4">
 												<div class="dropdown">
 													<button
 														class="btn btn-filter dropdown-toggle w-100"
 														type="button"
-														id="whDropdown"
+														id="filter-wh-button"
 														data-bs-toggle="dropdown"
 														aria-expanded="false"
 														style="text-overflow: ellipsis; overflow: hidden"
@@ -686,12 +691,12 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-4 col-sm-4">
 												<div class="dropdown">
 													<button
 														class="btn btn-filter dropdown-toggle w-100"
 														type="button"
-														id="capahDropdown"
+														id="filter-capah-button"
 														data-bs-toggle="dropdown"
 														aria-expanded="false"
 														style="text-overflow: ellipsis; overflow: hidden"
@@ -706,12 +711,12 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-4 col-sm-4">
 												<div class="dropdown">
 													<button
 														class="btn btn-filter dropdown-toggle w-100"
 														type="button"
-														id="ccaaenDropdown"
+														id="filter-ccaaen-button"
 														data-bs-toggle="dropdown"
 														aria-expanded="false"
 														style="text-overflow: ellipsis; overflow: hidden; margin-bottom: 0px !important"
@@ -729,16 +734,16 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-6">
+								<div class="col-lg-6 col-md-12">
 									<div class="card-wrapper border rounded-3 input-radius">
 										<h6 class="f-14 mb-2">Medidas:</h6>
 										<div class="d-flex">
-											<div class="col-md-4">
+											<div class="col-md-4 col-sm-4">
 												<div class="dropdown">
 													<button
 														class="btn btn-filter dropdown-toggle w-100"
 														type="button"
-														id="comprimentoDropdown"
+														id="filter-comprimento-button"
 														data-bs-toggle="dropdown"
 														aria-expanded="false"
 														style="text-overflow: ellipsis; overflow: hidden"
@@ -753,12 +758,12 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-4 col-sm-4">
 												<div class="dropdown">
 													<button
 														class="btn btn-filter dropdown-toggle w-100"
 														type="button"
-														id="larguraDropdown"
+														id="filter-largura-button"
 														data-bs-toggle="dropdown"
 														aria-expanded="false"
 														style="text-overflow: ellipsis; overflow: hidden"
@@ -773,12 +778,12 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-4 col-sm-4">
 												<div class="dropdown">
 													<button
 														class="btn btn-filter dropdown-toggle w-100"
 														type="button"
-														id="alturaDropdown"
+														id="filter-altura-button"
 														data-bs-toggle="dropdown"
 														aria-expanded="false"
 														style="text-overflow: ellipsis; overflow: hidden; margin-bottom: 0px !important"
@@ -794,6 +799,13 @@
 												</div>
 											</div>
 										</div>
+									</div>
+								</div>
+								<div id="active-filters" style="display: none">
+									<h5>Filtros Ativos:</h5>
+									<div id="filters-list">
+										<div class="filter-container" data-filter-name="Gama" id="filter-gama"></div>
+										<div class="filter-container" data-filter-name="Marca" id="filter-marca"></div>
 									</div>
 								</div>
 							</div>
