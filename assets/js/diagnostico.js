@@ -235,6 +235,19 @@ document.addEventListener('DOMContentLoaded', () => {
 			for (const [NomeComercial, group] of Object.entries(groupedProducts)) {
 				const product = group[0]; // Usa o primeiro produto do grupo para exibir
 
+				// Obter a data atual
+				const currentDate = new Date();
+
+				// Verificar se o produto está em campanha
+				const campanhaInicio = new Date(product.CampanhaInicio);
+				const campanhaFim = new Date(product.CampanhaFim);
+				const isEmCampanha = currentDate >= campanhaInicio && currentDate <= campanhaFim;
+
+				// Ribbon HTML (adiciona se estiver em campanha)
+				const ribbonEmCampanha = isEmCampanha
+					? `<div style="position: absolute; top: 0; right: 0; background-color: #006666; color: white; padding: 5px 10px; font-weight: bold; z-index: 1;">Em Campanha</div>`
+					: '';
+
 				const productCard = document.createElement('div');
 				productCard.className = 'col-xl-3 col-sm-6';
 
@@ -243,6 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				// Card original com visual restaurado
 				productCard.innerHTML = `
                     <div class="card">
+					${ribbonEmCampanha}
                         <div class="product-box">
                             <div class="product-img" style="text-align: center; text-align: -webkit-center">
                                 <img class="img-fluid" src="${product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif'}" alt="${

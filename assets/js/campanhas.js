@@ -14,8 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		.then(response => response.json())
 		.then(data => {
 			campanhas = data;
-			// let campanhasreverse = campanhas.sort((a, b) => b.id - a.id);
-			renderCampanhas(campanhas);
+			// Filtrar campanhas ativas ou brevemente ativas na inicialização
+			const campanhasIniciais = campanhas.filter(campanha => {
+				const estado = calcularEstado(campanha.DataInicio, campanha.DataFim);
+				return estado === 'Ativa' || estado === 'Brevemente';
+			});
+			radioAtivas.checked = false;
+			radioProximas.checked = false;
+			radioTodas.checked = false;
+			renderCampanhas(campanhasIniciais);
 			renderDestaques(campanhas);
 		})
 		.catch(error => console.error('Erro ao carregar campanhas:', error));
@@ -23,6 +30,16 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Função para renderizar campanhas
 	function renderCampanhas(filteredCampanhas) {
 		campanhaContainer.innerHTML = '';
+
+		if (filteredCampanhas.length === 0) {
+			campanhaContainer.innerHTML = `
+			<div class="col-12 text-center">
+				<p><strong>Não encontrámos campanhas para mostrar, tente o filtro "Ver todas" para obter o histórico de campanhas!</strong></p>
+			</div>
+		`;
+			return; // Sai da função para não tentar renderizar campanhas inexistentes
+		}
+
 		filteredCampanhas.forEach(campanha => {
 			const estadoCampanha = calcularEstado(campanha.DataInicio, campanha.DataFim);
 
@@ -140,8 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Função para resetar os filtros
 	resetButton.addEventListener('click', () => {
 		inputPesquisa.value = '';
-		radioTodas.checked = true;
-		renderCampanhas(campanhas);
+		radioTodas.checked = false;
+		radioAtivas.checked = false;
+		radioProximas.checked = false;
+		const campanhasIniciais = campanhas.filter(campanha => {
+			const estado = calcularEstado(campanha.DataInicio, campanha.DataFim);
+			return estado === 'Ativa' || estado === 'Brevemente';
+		});
+		renderCampanhas(campanhasIniciais); // Limpar filtros e mostrar todas
 	});
 
 	document.getElementById('btnAtivas').addEventListener('click', () => {
@@ -160,6 +183,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 
 	document.getElementById('btnLimpar').addEventListener('click', () => {
-		renderCampanhas(campanhas); // Limpar filtros e mostrar todas
+		const campanhasIniciais = campanhas.filter(campanha => {
+			const estado = calcularEstado(campanha.DataInicio, campanha.DataFim);
+			return estado === 'Ativa' || estado === 'Brevemente';
+		});
+		renderCampanhas(campanhasIniciais); // Limpar filtros e mostrar todas
 	});
 });
