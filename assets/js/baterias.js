@@ -520,6 +520,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		const modalEspec = exampleModalCenter.querySelector('.especificacao');
 		const modalAprov = exampleModalCenter.querySelector('.aprovacao');
 		const modalRecom = exampleModalCenter.querySelector('.recomendacao');
+		const modalDispPolos = exampleModalCenter.querySelector('.disppolos');
+		const modalTerminal = exampleModalCenter.querySelector('.terminal');
 		const modalSubstituta = exampleModalCenter.querySelector('.referencia-substituta'); // Campo para a referência substituta
 		const copyPriceBtn = exampleModalCenter.querySelector('#copy-price-btn');
 		const modalFichaSeguranca = exampleModalCenter.querySelector('#fichaseguranca'); // Botão da ficha de segurança
@@ -544,6 +546,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		modalRecom.innerHTML = `<span style="font-weight: 600;color: #000;">Esp. Elétricas:</span> ${product.Wh ? product.Wh + 'Wh' : ''} ${product.CapAh ? product.CapAh + 'CapAh' : ''} ${
 			product.CCAaEN ? product.CCAaEN + 'CCAaEN' : ''
 		}`;
+		modalDispPolos.innerHTML = `<span style="font-weight: 600;color: #000;">Disp. Polos:</span> ${product.EsqLigacao || ''}`;
+		modalTerminal.innerHTML = `<span style="font-weight: 600;color: #000;">Terminal:</span> ${product.Terminal || ''}`;
+
 		modalImage.src = product.imgUrl || '../assets/images/dashboard-3/product/semimagem.gif';
 		modalImage.alt = product.DesignacaoComercial;
 
@@ -573,8 +578,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		// Verifica se há um link de Ficha de Segurança
-		if (product.FichaTecnica) {
-			modalFichaSeguranca.href = product.FichaTecnica; // Define o link
+		if (product.FichaSeguranca) {
+			modalFichaSeguranca.href = product.FichaSeguranca; // Define o link
 			modalFichaSeguranca.target = '_blank'; // Abre em uma nova aba
 			modalFichaSeguranca.rel = 'noopener noreferrer'; // Boa prática de segurança
 			modalFichaSeguranca.style.pointerEvents = 'auto'; // Reativa o botão

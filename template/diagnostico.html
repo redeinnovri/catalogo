@@ -55,6 +55,26 @@
 				text-decoration: underline;
 				color: #141414; /* Cor mais escura ao passar o mouse */
 			}
+			/* Botões lado a lado por padrão */
+			.navbar-buttons {
+				display: flex;
+				justify-content: space-between;
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				margin-bottom: 1rem;
+				box-sizing: border-box;
+			}
+
+			/* Quando a sidebar está minimizada, os botões empilham */
+			.stacked-buttons {
+				flex-direction: column;
+			}
+
+			.stacked-buttons button {
+				margin: 5px 0; /* Ajusta o espaço entre os botões */
+				width: 100%; /* Os botões ocupam a largura completa */
+			}
 		</style>
 	</head>
 	<body>
@@ -539,7 +559,7 @@
 									style="
 										flex: 1;
 										margin: 0 5px;
-										background-color: #c5c5c55e;
+										background-color: #00ffad99;
 										border: none;
 										color: white;
 										padding: 10px;
