@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <img class="img-fluid top-radius-blog" src="${imagem}" alt="${campanha.Titulo}" />
                             <div class="product-hover">
                                 <ul>
-                                    <li><a href="${campanha.PdfUrl}" target="_blank"><i class="icon-link"></i></a></li>
+                                    <li><a href="${campanha.PdfUrl}" target="_blank" type="application/pdf"><i class="icon-link"></i></a></li>
                                 </ul>
                             </div>
                         </div>
