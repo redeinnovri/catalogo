@@ -116,11 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
 				}
 
 				destaquesContainer.innerHTML += `
-                <li>
-                    <a href="#" onclick="filtrarPorDestaque(${campanha.Id})">${campanha.Titulo}</a>
-                    <span class="badge ${badgeClass} pull-right">${estadoCampanha}</span>
-                </li>
-            `;
+					<li>
+						<a href="#" onclick="filtrarPorDestaque(${campanha.Id}); return false;">${campanha.Titulo}</a>
+						<span class="badge ${badgeClass} pull-right">${estadoCampanha}</span>
+					</li>
+				`;
 			});
 	}
 
