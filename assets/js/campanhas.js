@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (filteredCampanhas.length === 0) {
 			campanhaContainer.innerHTML = `
 			<div class="col-12 text-center">
-				<p><strong>Não encontrámos campanhas para mostrar, tente o filtro "Ver todas" para obter o histórico de campanhas!</strong></p>
+				<p><strong>Não encontrámos campanhas para mostrar, tente o filtro "Ver todas"!</strong></p>
 			</div>
 		`;
 			return; // Sai da função para não tentar renderizar campanhas inexistentes
@@ -116,8 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				}
 
 				destaquesContainer.innerHTML += `
-					<li>
-						<a href="#" onclick="filtrarPorDestaque(${campanha.Id}); return false;">${campanha.Titulo}</a>
+					<li style="display: flex; align-items: center; place-content: space-between;">
+						<a class="mr-1" href="#" onclick="filtrarPorDestaque(${campanha.Id}); return false;" style="padding:5px;">${campanha.Titulo}</a>
 						<span class="badge ${badgeClass} pull-right">${estadoCampanha}</span>
 					</li>
 				`;

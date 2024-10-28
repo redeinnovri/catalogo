@@ -1,28 +1,21 @@
-document.addEventListener('DOMContentLoaded', () => {
-	const sidebar = document.querySelector('.sidebar-wrapper');
-	const navbarButtons = document.querySelector('.navbar-buttons');
+// Toggle sidebar e ajuste da disposição dos botões
+$nav = $('.sidebar-wrapper');
+$header = $('.page-header');
+$toggle_nav_top = $('.toggle-sidebar');
 
-	// Função para ajustar os botões com base na classe da sidebar
-	function toggleButtonLayout() {
-		if (sidebar.classList.contains('close-icon')) {
-			navbarButtons.classList.add('stacked-buttons');
-			console.log('close-icon');
-		} else {
-			navbarButtons.classList.remove('stacked-buttons');
-		}
+// Função para ajustar a disposição dos botões
+function ajustarDisposicaoBotoes() {
+	const botoesContainer = $nav.find('.botoes-container');
+
+	if ($nav.hasClass('close_icon')) {
+		// Se a sidebar estiver minimizada
+		botoesContainer.css('flex-direction', 'column');
+	} else {
+		// Se a sidebar estiver expandida
+		botoesContainer.css('flex-direction', 'row');
 	}
+}
 
-	// Inicialmente verifica a classe da sidebar
-	toggleButtonLayout();
 
-	// MutationObserver para monitorar mudanças na classe da sidebar
-	const observer = new MutationObserver(() => {
-		toggleButtonLayout();
-	});
-
-	// Observa mudanças nos atributos da sidebar
-	observer.observe(sidebar, {
-		attributes: true, // Monitora mudanças nos atributos
-		attributeFilter: ['class'], // Apenas mudanças na classe
-	});
-});
+// Chamada inicial para ajustar a disposição ao carregar a página
+ajustarDisposicaoBotoes();

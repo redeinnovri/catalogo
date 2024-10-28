@@ -518,60 +518,88 @@
 							</ul>
 							<div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
 
-							<div style="position: absolute; bottom: 0; width: 100%; display: flex; justify-content: space-between; margin-bottom: 1rem; box-sizing: border-box">
+							<div
+								style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 5px; position: absolute; bottom: 0; width: 100%; margin-bottom: 1rem; box-sizing: border-box"
+							>
 								<button
-									style="
-										flex: 1;
-										margin: 0 5px;
-										background-color: #c5c5c55e;
-										border: none;
-										color: white;
-										padding: 10px;
-										text-align: center;
-										text-decoration: none;
-										font-size: 16px;
-										cursor: pointer;
-										width: 100%;
-										border-radius: 0.3rem;
-									"
+									style="position: relative; background-color: #c5c5c55e; border: none; color: white; padding: 10px; font-size: 16px; cursor: pointer; border-radius: 0.3rem"
+									onmouseover="this.children[1].style.visibility='visible';this.children[1].style.opacity='1'"
+									onmouseout="this.children[1].style.visibility='hidden';this.children[1].style.opacity='0'"
 								>
 									<i data-feather="home"></i>
+									<span
+										style="
+											visibility: hidden;
+											background-color: #333;
+											color: #fff;
+											text-align: center;
+											border-radius: 5px;
+											padding: 5px;
+											position: absolute;
+											bottom: 110%;
+											left: 50%;
+											transform: translateX(-50%);
+											white-space: nowrap;
+											z-index: 1;
+											opacity: 0;
+											transition: opacity 0.3s;
+										"
+										>Início</span
+									>
 								</button>
+
 								<button
-									style="
-										flex: 1;
-										margin: 0 5px;
-										background-color: #c5c5c55e;
-										border: none;
-										color: white;
-										padding: 10px;
-										text-align: center;
-										text-decoration: none;
-										font-size: 16px;
-										cursor: pointer;
-										width: 100%;
-										border-radius: 0.3rem;
-									"
+									style="position: relative; background-color: #c5c5c55e; border: none; color: white; padding: 10px; font-size: 16px; cursor: pointer; border-radius: 0.3rem"
+									onmouseover="this.children[1].style.visibility='visible';this.children[1].style.opacity='1'"
+									onmouseout="this.children[1].style.visibility='hidden';this.children[1].style.opacity='0'"
 								>
 									<i data-feather="user-plus"></i>
+									<span
+										style="
+											visibility: hidden;
+											background-color: #333;
+											color: #fff;
+											text-align: center;
+											border-radius: 5px;
+											padding: 5px;
+											position: absolute;
+											bottom: 110%;
+											left: 50%;
+											transform: translateX(-50%);
+											white-space: nowrap;
+											z-index: 1;
+											opacity: 0;
+											transition: opacity 0.3s;
+										"
+										>Novo Utilizador</span
+									>
 								</button>
+
 								<button
-									style="
-										flex: 1;
-										margin: 0 5px;
-										background-color: #00ffad99;
-										border: none;
-										color: white;
-										padding: 10px;
-										text-align: center;
-										text-decoration: none;
-										font-size: 16px;
-										cursor: pointer;
-										width: 100%;
-										border-radius: 0.3rem;
-									"
+									style="position: relative; background-color: #c5c5c55e; border: none; color: #00ffad; padding: 10px; font-size: 16px; cursor: pointer; border-radius: 0.3rem"
+									onmouseover="this.children[1].style.visibility='visible';this.children[1].style.opacity='1'"
+									onmouseout="this.children[1].style.visibility='hidden';this.children[1].style.opacity='0'"
 								>
 									<i data-feather="power"></i>
+									<span
+										style="
+											visibility: hidden;
+											background-color: #333;
+											color: #fff;
+											text-align: center;
+											border-radius: 5px;
+											padding: 5px;
+											position: absolute;
+											bottom: 110%;
+											left: 50%;
+											transform: translateX(-50%);
+											white-space: nowrap;
+											z-index: 1;
+											opacity: 0;
+											transition: opacity 0.3s;
+										"
+										>Login/Logout</span
+									>
 								</button>
 							</div>
 						</div>
@@ -804,5 +832,6 @@
 		<!-- Theme js-->
 		<script src="../assets/js/script.js"></script>
 		<script src="../assets/js/diagnostico.js"></script>
+		<script src="../assets/js/navbar-buttons.js"></script>
 	</body>
 </html>

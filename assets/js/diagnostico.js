@@ -242,11 +242,18 @@ document.addEventListener('DOMContentLoaded', () => {
 				const campanhaInicio = new Date(product.CampanhaInicio);
 				const campanhaFim = new Date(product.CampanhaFim);
 				const isEmCampanha = currentDate >= campanhaInicio && currentDate <= campanhaFim;
+				let ribbonEmCampanha = '';
 
-				// Ribbon HTML (adiciona se estiver em campanha)
-				const ribbonEmCampanha = isEmCampanha
-					? `<div style="position: absolute; top: 0; right: 0; background-color: #006666; color: white; padding: 5px 10px; font-weight: bold; z-index: 1;">Em Campanha</div>`
-					: '';
+				if (product.Expomecanica === 1) {
+					ribbonEmCampanha = isEmCampanha
+						? `<div style="position: absolute; top: 0; right: 0; background-color: #ffaa00; color: white; padding: 5px 10px; font-weight: bold; z-index: 1; max-width: 50%; text-align: end;">Campanha Especial Expomecânica</div>`
+						: '';
+				} else {
+					// Ribbon HTML (adiciona se estiver em campanha)
+					ribbonEmCampanha = isEmCampanha
+						? `<div style="position: absolute; top: 0; right: 0; background-color: #006666; color: white; padding: 5px 10px; font-weight: bold; z-index: 1;">Em Campanha</div>`
+						: '';
+				}
 
 				const productCard = document.createElement('div');
 				productCard.className = 'col-xl-3 col-sm-6';
