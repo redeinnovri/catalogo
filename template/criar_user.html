@@ -366,7 +366,7 @@
 									<div class="row">
 										<div class="col-xl-8 col-sm-12">
 											<div class="row mb-3">
-												<div class="col-xl-2 col-md-12 col-sm-12" style="padding-right: 0px">
+												<div class="col-xl-2 col-md-6 col-sm-6" style="padding-right: 0px">
 													<div class="card-wrapper border rounded-3 light-card" style="height: 100%">
 														<div>
 															<div class="form-check radio radio-primary">
@@ -383,7 +383,14 @@
 																<input class="form-check-input" id="shipping-choose2" type="radio" name="radio3" value="option1" />
 																<label class="form-check-label mb-0 f-w-500" for="shipping-choose2">Cliente Oficina</label>
 															</div>
-															<input class="form-control" id="placeholdername" type="text" required="" placeholder="Escreva o nome de cliente..." />
+															<div class="row">
+																<div class="col-3" style="padding-right: 0;">
+																	<input class="form-control" id="placeholderidcliente" type="number" required="" placeholder="Id..." style="padding-right: 0;"/>
+																</div>
+																<div class="col-9">
+																	<input class="form-control" id="placeholdername" type="text" required="" placeholder="Escreva o nome de cliente..." />
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -732,12 +739,12 @@
 														</div>
 														<div class="col-12 mb-3">
 															<label class="form-label">Escolha a versão do Software</label>
-															<ul class="radio-wrapper mb-3">
+															<ul class="radio-wrapper mb-3 flex">
 																<li>
 																	<input class="form-check-input" id="basico" type="radio" name="radio5" value="option5" />
-																	<label class="form-check-label" for="basico"
+																	<label class="form-check-label" for="basico" style="align-self: flex-start"
 																		><span>Básico</span>
-																		<p style="margin: 0">Planos Manutenção</p>
+																		<p style="margin: 0; margin-top: 1rem">Planos Manutenção</p>
 																		<p style="margin: 0">Lubrif. e Fluídos</p>
 																		<p style="margin: 0">Tempos de Trabalho</p>
 																		<p style="margin: 0">Binários de Aperto</p>
@@ -745,9 +752,9 @@
 																</li>
 																<li>
 																	<input class="form-check-input" id="pro" type="radio" name="radio5" value="option5" />
-																	<label class="form-check-label" for="pro"
+																	<label class="form-check-label" for="pro" style="align-self: flex-start"
 																		><span>Profissional</span>
-																		<p style="margin: 0">Básico +</p>
+																		<p style="margin: 0; margin-top: 1rem">Básico +</p>
 																		<p style="margin: 0">Manuais de Reparação</p>
 																		<p style="margin: 0">Notas Técnicas</p>
 																		<p style="margin: 0">Boletins de Avarias</p>
@@ -755,9 +762,9 @@
 																</li>
 																<li style="max-width: 400px">
 																	<input class="form-check-input" id="completo" type="radio" name="radio5" value="option5" />
-																	<label class="form-check-label" for="completo"
-																		><span>Completo</span>
-																		<p style="margin: 0">Profissional +</p>
+																	<label class="form-check-label" for="completo" style="align-self: flex-start"
+																		><span style="margin-bottom: 0.5rem">Completo</span>
+																		<p style="margin: 0; margin-top: 1rem">Profissional +</p>
 																		<p style="margin: 0">Campanhas Reparação Construtores</p>
 																		<p style="margin: 0">Fusíveis e Relés / Esquemas Eléctricos</p>
 																		<p style="margin: 0">Pneus / Valores de Diagnóstico</p>
