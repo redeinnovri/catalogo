@@ -36,6 +36,18 @@
 		<link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen" />
 		<!-- Responsive css-->
 		<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css" />
+		<style>
+			.card-body {
+				max-height: 0;
+				padding: 0 !important;
+				overflow: hidden;
+				transition: max-height 0.9s ease;
+			}
+			.card-body.active {
+				max-height: fit-content;
+				padding: 20px !important;
+			}
+		</style>
 	</head>
 	<body>
 		<!-- loader starts-->
@@ -340,14 +352,16 @@
 											><span class="pull-right">
 												<button class="btn btn-primary" type="button">
 													<span> <i class="fa fa-check text-white"></i></span> Verificar
-												</button></span
-											>
+												</button>
+												<button class="btn btn-link toggle-btn" type="button" onclick="toggleCardBody(this)">
+													<i class="fa fa-chevron-down"></i></button
+											></span>
 										</h6>
 										<p>Campos obrigatórios assinalados com (*)</p>
 									</div>
 								</div>
 							</div>
-							<div class="card-body">
+							<div class="card-body active">
 								<form>
 									<div class="row">
 										<div class="col-xl-8 col-sm-12">
@@ -492,8 +506,10 @@
 											><span class="pull-right">
 												<button class="btn btn-primary" type="button">
 													<span> <i class="fa fa-check text-white"></i></span> Verificar
-												</button></span
-											>
+												</button>
+												<button class="btn btn-link toggle-btn" type="button" onclick="toggleCardBody(this)">
+													<i class="fa fa-chevron-down"></i></button
+											></span>
 										</h6>
 										<p>Campos obrigatórios assinalados com (*)</p>
 									</div>
@@ -853,7 +869,7 @@
 								</div>
 							</div>
 						</div>
-            <div class="card">
+						<div class="card">
 							<div class="card-header">
 								<div class="d-flex">
 									<img class="img-40 img-fluid m-r-20" src="../assets/images/job-search/1.jpg" alt="" />
@@ -863,8 +879,10 @@
 											><span class="pull-right">
 												<button class="btn btn-primary" type="button">
 													<span> <i class="fa fa-check text-white"></i></span> Verificar
-												</button></span
-											>
+												</button>
+												<button class="btn btn-link toggle-btn" type="button" onclick="toggleCardBody(this)">
+													<i class="fa fa-chevron-down"></i></button
+											></span>
 										</h6>
 										<p>Campos obrigatórios assinalados com (*)</p>
 									</div>
@@ -895,7 +913,7 @@
 								</div>
 							</div>
 						</div>
-            <div class="card">
+						<div class="card">
 							<div class="card-header">
 								<div class="d-flex">
 									<img class="img-40 img-fluid m-r-20" src="../assets/images/job-search/1.jpg" alt="" />
@@ -905,8 +923,10 @@
 											><span class="pull-right">
 												<button class="btn btn-primary" type="button">
 													<span> <i class="fa fa-check text-white"></i></span> Verificar
-												</button></span
-											>
+												</button>
+												<button class="btn btn-link toggle-btn" type="button" onclick="toggleCardBody(this)">
+													<i class="fa fa-chevron-down"></i></button
+											></span>
 										</h6>
 										<p>Campos obrigatórios assinalados com (*)</p>
 									</div>
@@ -937,7 +957,7 @@
 								</div>
 							</div>
 						</div>
-            <div class="card">
+						<div class="card">
 							<div class="card-header">
 								<div class="d-flex">
 									<img class="img-40 img-fluid m-r-20" src="../assets/images/job-search/1.jpg" alt="" />
@@ -947,8 +967,10 @@
 											><span class="pull-right">
 												<button class="btn btn-primary" type="button">
 													<span> <i class="fa fa-check text-white"></i></span> Verificar
-												</button></span
-											>
+												</button>
+												<button class="btn btn-link toggle-btn" type="button" onclick="toggleCardBody(this)">
+													<i class="fa fa-chevron-down"></i></button
+											></span>
 										</h6>
 										<p>Campos obrigatórios assinalados com (*)</p>
 									</div>
@@ -979,7 +1001,7 @@
 								</div>
 							</div>
 						</div>
-            <div class="card">
+						<div class="card">
 							<div class="card-header">
 								<div class="d-flex">
 									<img class="img-40 img-fluid m-r-20" src="../assets/images/job-search/1.jpg" alt="" />
@@ -989,31 +1011,43 @@
 											><span class="pull-right">
 												<button class="btn btn-primary" type="button">
 													<span> <i class="fa fa-check text-white"></i></span> Verificar
-												</button></span
-											>
+												</button>
+												<button class="btn btn-link toggle-btn" type="button" onclick="toggleCardBody(this)">
+													<i class="fa fa-chevron-down"></i>
+												</button>
+											</span>
 										</h6>
 										<p>Campos obrigatórios assinalados com (*)</p>
 									</div>
 								</div>
 							</div>
 							<div class="card-body">
-								<div class="row mb-3">
-									<div class="col-xl-3 col-md-6 col-sm-6" style="padding-right: 0px">
-										<div class="card-wrapper border rounded-3 light-card" style="height: 100%">
-											<div>
-												<div class="form-check radio radio-primary">
-													<input class="form-check-input" id="igestao-interno" type="radio" name="radio4" value="option2" />
-													<label class="form-check-label mb-0 f-w-500" for="igestao-interno">Interno</label>
+								<div class="main-img-checkbox">
+									<div class="row g-3">
+										<div class="col-xxl-3 col-sm-6 mb-3">
+											<div class="card-wrapper border rounded-3 checkbox-checked">
+												<h6 class="sub-title">Gestão</h6>
+												<div class="img-checkbox">
+													<input class="main-img-cover form-check-input" id="img-check-gestao" type="checkbox" />
+													<label class="form-check-label mb-0" for="img-check-gestao"> <img src="../assets/images/switch/1.jpg" alt="coffee-beans" style="max-height: 6rem" /></label>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="col-xl-3 col-md-6 col-sm-6">
-										<div class="card-wrapper border rounded-3 light-card">
-											<div>
-												<div class="form-check radio radio-primary">
-													<input class="form-check-input" id="igestao-oficina" type="radio" name="radio4" value="option2" />
-													<label class="form-check-label mb-0 f-w-500" for="igestao-oficina">Cliente Oficina</label>
+										<div class="col-xxl-3 col-sm-6 mb-3">
+											<div class="card-wrapper border rounded-3 checkbox-checked">
+												<h6 class="sub-title">Incidências</h6>
+												<div class="img-checkbox">
+													<input class="main-img-cover form-check-input" id="img-check-incidencias" type="checkbox" />
+													<label class="form-check-label mb-0" for="img-check-incidencias"> <img src="../assets/images/switch/1.jpg" alt="coffee-beans" style="max-height: 6rem" /></label>
+												</div>
+											</div>
+										</div>
+										<div class="col-xxl-3 col-sm-6 mb-3">
+											<div class="card-wrapper border rounded-3 checkbox-checked">
+												<h6 class="sub-title">Encomendas</h6>
+												<div class="img-checkbox">
+													<input class="main-img-cover form-check-input" id="img-check-encomendas" type="checkbox" />
+													<label class="form-check-label mb-0" for="img-check-encomendas"> <img src="../assets/images/switch/1.jpg" alt="coffee-beans" style="max-height: 6rem" /></label>
 												</div>
 											</div>
 										</div>
@@ -1058,5 +1092,16 @@
 		<!-- Plugins JS Ends-->
 		<!-- Theme js-->
 		<script src="../assets/js/script.js"></script>
+		<script>
+			function toggleCardBody(button) {
+				const cardBody = button.closest('.card').querySelector('.card-body');
+				cardBody.classList.toggle('active');
+
+				// Alterna o ícone
+				const icon = button.querySelector('i');
+				icon.classList.toggle('fa-chevron-down');
+				icon.classList.toggle('fa-chevron-up');
+			}
+		</script>
 	</body>
 </html>
