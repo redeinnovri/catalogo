@@ -474,13 +474,6 @@
 																	<input class="form-check-input switch-primary check-size" type="checkbox" role="switch" /></div
 															></span>
 														</li>
-														<li class="mb-4">
-															Incidências - i3
-															<span class="count"
-																><div class="form-check form-switch form-check-inline">
-																	<input class="form-check-input switch-primary check-size" type="checkbox" role="switch" /></div
-															></span>
-														</li>
 													</ul>
 												</div>
 											</div>
@@ -593,7 +586,7 @@
 												<div class="sidebar-body">
 													<form class="price-wrapper">
 														<div class="col-12 mb-3">
-															<label class="form-label">Resultados da Pesquisa</label>
+															<label class="form-label">Motor de Pesquisa</label>
 															<ul class="radio-wrapper mb-3">
 																<li>
 																	<input class="form-check-input" id="tecdoc" type="radio" name="radio5" value="option5" checked="" />
@@ -604,7 +597,7 @@
 																	<label class="form-check-label" for="ami"><span>AMI</span></label>
 																</li>
 																<li>
-																	<input class="form-check-input" id="oem" type="radio" name="radio5" value="option5" />
+																	<input class="form-check-input" id="oem" type="checkbox" name="checkbox5" value="checkbox5" />
 																	<label class="form-check-label" for="oem"><span>Dados OEM</span></label>
 																</li>
 															</ul>
@@ -623,7 +616,7 @@
 																	<label class="form-check-label" for="radio-icon5"><span>Semáforo e Quantidade</span></label>
 																</li>
 															</ul>
-															<label class="form-label">Acesso a Preços e Envio de Pedidos</label>
+															<label class="form-label">Acesso a Preços, Envio de Pedidos e Documentos</label>
 															<ul class="radio-wrapper">
 																<li>
 																	<input class="form-check-input" id="checkbox-icon" type="checkbox" name="checkbox5" value="option5" />
@@ -641,11 +634,19 @@
 																	<input class="form-check-input" id="checkbox-icon6" type="checkbox" name="checkbox5" value="option6" />
 																	<label class="form-check-label" for="checkbox-icon6"><span>Fazer Pedidos</span></label>
 																</li>
+																<li>
+																	<input class="form-check-input" id="checkbox-icon6" type="checkbox" name="checkbox5" value="option6" />
+																	<label class="form-check-label" for="checkbox-icon6"><span>Faturas</span></label>
+																</li>
+																<li>
+																	<input class="form-check-input" id="checkbox-icon6" type="checkbox" name="checkbox5" value="option6" />
+																	<label class="form-check-label" for="checkbox-icon6"><span>Guias</span></label>
+																</li>
 															</ul>
 														</div>
 														<div class="row g-3 custom-input mt-3">
 															<div class="col-sm-5">
-																<label class="form-label" for="sellingPrice">Data Limite de Acesso</label>
+																<label class="form-label" for="sellingPrice">Data Limite de Acesso – Para dar Baixa de Utilizador</label>
 																<input class="form-control digits" type="date" value="2024-01-01" />
 															</div>
 														</div>
@@ -718,15 +719,36 @@
 															<ul class="radio-wrapper mb-3">
 																<li>
 																	<input class="form-check-input" id="basico" type="radio" name="radio5" value="option5" />
-																	<label class="form-check-label" for="basico"><span>Básico</span></label>
+																	<label class="form-check-label" for="basico"
+																		><span>Básico</span>
+																		<p style="margin: 0">Planos Manutenção</p>
+																		<p style="margin: 0">Lubrif. e Fluídos</p>
+																		<p style="margin: 0">Tempos de Trabalho</p>
+																		<p style="margin: 0">Binários de Aperto</p>
+																	</label>
 																</li>
 																<li>
 																	<input class="form-check-input" id="pro" type="radio" name="radio5" value="option5" />
-																	<label class="form-check-label" for="pro"><span>Pro</span></label>
+																	<label class="form-check-label" for="pro"
+																		><span>Profissional</span>
+																		<p style="margin: 0">Básico +</p>
+																		<p style="margin: 0">Manuais de Reparação</p>
+																		<p style="margin: 0">Notas Técnicas</p>
+																		<p style="margin: 0">Boletins de Avarias</p>
+																	</label>
 																</li>
-																<li>
+																<li style="max-width: 400px">
 																	<input class="form-check-input" id="completo" type="radio" name="radio5" value="option5" />
-																	<label class="form-check-label" for="completo"><span>Completo</span></label>
+																	<label class="form-check-label" for="completo"
+																		><span>Completo</span>
+																		<p style="margin: 0">Profissional +</p>
+																		<p style="margin: 0">Campanhas Reparação Construtores</p>
+																		<p style="margin: 0">Fusíveis e Relés / Esquemas Eléctricos</p>
+																		<p style="margin: 0">Pneus / Valores de Diagnóstico</p>
+																		<p style="margin: 0">Localização de Componentes</p>
+																		<p style="margin: 0">Diagramas Sistemas de Conforto / Carroçaria</p>
+																		<p style="margin: 0"></p>
+																	</label>
 																</li>
 															</ul>
 														</div>
@@ -774,7 +796,7 @@
 															</div>
 															<div class="col-xxl-3 col-sm-6 mb-3">
 																<div class="card-wrapper border rounded-3 checkbox-checked">
-																	<h6 class="sub-title">Ativar Módulo Demo</h6>
+																	<h6 class="sub-title">Ativar Demo</h6>
 																	<div class="img-checkbox">
 																		<input class="main-img-cover form-check-input" id="img-check-demo" type="checkbox" />
 																		<label class="form-check-label mb-0" for="img-check-demo"> <img src="../assets/images/switch/1.jpg" alt="coffee-beans" style="max-height: 6rem" /></label>
@@ -824,6 +846,217 @@
 														</div>
 														<div class="btn btn-info mt-3">Ativar Licença Demo</div>
 													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card">
+							<div class="card-header">
+								<div class="d-flex">
+									<img class="img-40 img-fluid m-r-20" src="../assets/images/job-search/1.jpg" alt="" />
+									<div class="flex-grow-1">
+										<h6 class="f-w-600">
+											<span>WebShop - i2i</span
+											><span class="pull-right">
+												<button class="btn btn-primary" type="button">
+													<span> <i class="fa fa-check text-white"></i></span> Verificar
+												</button></span
+											>
+										</h6>
+										<p>Campos obrigatórios assinalados com (*)</p>
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row mb-3">
+									<div class="col-xl-3 col-md-6 col-sm-6" style="padding-right: 0px">
+										<div class="card-wrapper border rounded-3 light-card" style="height: 100%">
+											<div>
+												<div class="form-check radio radio-primary">
+													<input class="form-check-input" id="shipping-choose2" type="radio" name="radio4" value="option2" />
+													<label class="form-check-label mb-0 f-w-500" for="shipping-choose2">Interno</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-md-6 col-sm-6">
+										<div class="card-wrapper border rounded-3 light-card">
+											<div>
+												<div class="form-check radio radio-primary">
+													<input class="form-check-input" id="shipping-choose3" type="radio" name="radio4" value="option2" />
+													<label class="form-check-label mb-0 f-w-500" for="shipping-choose3">Cliente Oficina</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+            
+            <div class="card">
+							<div class="card-header">
+								<div class="d-flex">
+									<img class="img-40 img-fluid m-r-20" src="../assets/images/job-search/1.jpg" alt="" />
+									<div class="flex-grow-1">
+										<h6 class="f-w-600">
+											<span>iProcessos</span
+											><span class="pull-right">
+												<button class="btn btn-primary" type="button">
+													<span> <i class="fa fa-check text-white"></i></span> Verificar
+												</button></span
+											>
+										</h6>
+										<p>Campos obrigatórios assinalados com (*)</p>
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row mb-3">
+									<div class="col-xl-3 col-md-6 col-sm-6" style="padding-right: 0px">
+										<div class="card-wrapper border rounded-3 light-card" style="height: 100%">
+											<div>
+												<div class="form-check radio radio-primary">
+													<input class="form-check-input" id="shipping-choose2" type="radio" name="radio4" value="option2" />
+													<label class="form-check-label mb-0 f-w-500" for="shipping-choose2">Interno</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-md-6 col-sm-6">
+										<div class="card-wrapper border rounded-3 light-card">
+											<div>
+												<div class="form-check radio radio-primary">
+													<input class="form-check-input" id="shipping-choose3" type="radio" name="radio4" value="option2" />
+													<label class="form-check-label mb-0 f-w-500" for="shipping-choose3">Cliente Oficina</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+            <div class="card">
+							<div class="card-header">
+								<div class="d-flex">
+									<img class="img-40 img-fluid m-r-20" src="../assets/images/job-search/1.jpg" alt="" />
+									<div class="flex-grow-1">
+										<h6 class="f-w-600">
+											<span>iCatálogos</span
+											><span class="pull-right">
+												<button class="btn btn-primary" type="button">
+													<span> <i class="fa fa-check text-white"></i></span> Verificar
+												</button></span
+											>
+										</h6>
+										<p>Campos obrigatórios assinalados com (*)</p>
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row mb-3">
+									<div class="col-xl-3 col-md-6 col-sm-6" style="padding-right: 0px">
+										<div class="card-wrapper border rounded-3 light-card" style="height: 100%">
+											<div>
+												<div class="form-check radio radio-primary">
+													<input class="form-check-input" id="shipping-choose2" type="radio" name="radio4" value="option2" />
+													<label class="form-check-label mb-0 f-w-500" for="shipping-choose2">Interno</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-md-6 col-sm-6">
+										<div class="card-wrapper border rounded-3 light-card">
+											<div>
+												<div class="form-check radio radio-primary">
+													<input class="form-check-input" id="shipping-choose3" type="radio" name="radio4" value="option2" />
+													<label class="form-check-label mb-0 f-w-500" for="shipping-choose3">Cliente Oficina</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+            <div class="card">
+							<div class="card-header">
+								<div class="d-flex">
+									<img class="img-40 img-fluid m-r-20" src="../assets/images/job-search/1.jpg" alt="" />
+									<div class="flex-grow-1">
+										<h6 class="f-w-600">
+											<span>iCampanhas</span
+											><span class="pull-right">
+												<button class="btn btn-primary" type="button">
+													<span> <i class="fa fa-check text-white"></i></span> Verificar
+												</button></span
+											>
+										</h6>
+										<p>Campos obrigatórios assinalados com (*)</p>
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row mb-3">
+									<div class="col-xl-3 col-md-6 col-sm-6" style="padding-right: 0px">
+										<div class="card-wrapper border rounded-3 light-card" style="height: 100%">
+											<div>
+												<div class="form-check radio radio-primary">
+													<input class="form-check-input" id="shipping-choose2" type="radio" name="radio4" value="option2" />
+													<label class="form-check-label mb-0 f-w-500" for="shipping-choose2">Interno</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-md-6 col-sm-6">
+										<div class="card-wrapper border rounded-3 light-card">
+											<div>
+												<div class="form-check radio radio-primary">
+													<input class="form-check-input" id="shipping-choose3" type="radio" name="radio4" value="option2" />
+													<label class="form-check-label mb-0 f-w-500" for="shipping-choose3">Cliente Oficina</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+            <div class="card">
+							<div class="card-header">
+								<div class="d-flex">
+									<img class="img-40 img-fluid m-r-20" src="../assets/images/job-search/1.jpg" alt="" />
+									<div class="flex-grow-1">
+										<h6 class="f-w-600">
+											<span>iGestão</span
+											><span class="pull-right">
+												<button class="btn btn-primary" type="button">
+													<span> <i class="fa fa-check text-white"></i></span> Verificar
+												</button></span
+											>
+										</h6>
+										<p>Campos obrigatórios assinalados com (*)</p>
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row mb-3">
+									<div class="col-xl-3 col-md-6 col-sm-6" style="padding-right: 0px">
+										<div class="card-wrapper border rounded-3 light-card" style="height: 100%">
+											<div>
+												<div class="form-check radio radio-primary">
+													<input class="form-check-input" id="shipping-choose2" type="radio" name="radio4" value="option2" />
+													<label class="form-check-label mb-0 f-w-500" for="shipping-choose2">Interno</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-md-6 col-sm-6">
+										<div class="card-wrapper border rounded-3 light-card">
+											<div>
+												<div class="form-check radio radio-primary">
+													<input class="form-check-input" id="shipping-choose3" type="radio" name="radio4" value="option2" />
+													<label class="form-check-label mb-0 f-w-500" for="shipping-choose3">Cliente Oficina</label>
 												</div>
 											</div>
 										</div>
