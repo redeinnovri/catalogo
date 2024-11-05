@@ -262,11 +262,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         <ul class="list-group p-10">
                             <li class="list-group-item d-flex align-items-start flex-wrap">
                                 <div class="ms-2 me-auto">SAE</div>
-                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.ViscosidadeSAE}</span>
+                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.ViscosidadeSAE || 'N/D'}</span>
                             </li>
                             <li class="list-group-item d-flex align-items-start flex-wrap">
                                 <div class="ms-2 me-auto">ACEA</div>
-                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.EspecificacaoACEA || ''}</span>
+                                <span class="badge bg-light text-dark p-2" style="font-weight: 700">${product.EspecificacaoACEA || 'N/D'}</span>
                             </li>
                         </ul>
                         <!-- Alert de substituição -->
