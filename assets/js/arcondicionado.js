@@ -400,6 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const modalRecom = exampleModalCenter.querySelector('.recomendacao');
 		const copyPriceBtn = exampleModalCenter.querySelector('#copy-price-btn');
 		const modalFichaSeguranca = exampleModalCenter.querySelector('#fichaseguranca'); // Botão da ficha de segurança
+		const modalManual = exampleModalCenter.querySelector('#manual'); // Botão da ficha de segurança
 
 		// Atualiza o conteúdo do modal
 		modalPrice.innerHTML = `${product.Referencia}`;
@@ -452,6 +453,18 @@ document.addEventListener('DOMContentLoaded', () => {
 			modalFichaSeguranca.removeAttribute('href');
 			modalFichaSeguranca.style.pointerEvents = 'none'; // Evita que o botão seja clicável
 			modalFichaSeguranca.classList.add('disabled'); // Opcional: adiciona uma classe para indicar desativação
+		}
+
+		if (product.Manual) {
+			modalManual.href = product.Manual; // Define o link
+			modalManual.target = '_blank'; // Abre em uma nova aba
+			modalManual.rel = 'noopener noreferrer'; // Boa prática de segurança
+			modalManual.style.pointerEvents = 'auto'; // Reativa o botão
+			modalManual.classList.remove('disabled'); // Remove a classe desativada
+		} else {
+			modalManual.removeAttribute('href');
+			modalManual.style.pointerEvents = 'none'; // Evita que o botão seja clicável
+			modalManual.classList.add('disabled'); // Opcional: adiciona uma classe para indicar desativação
 		}
 
 		// Remove qualquer event listener anterior para evitar múltiplos eventos

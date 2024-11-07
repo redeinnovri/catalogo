@@ -353,12 +353,35 @@
 												<button class="btn btn-primary" type="button">
 													<span> <i class="fa fa-check text-white"></i></span> Verificar
 												</button>
+
 												<button class="btn btn-link toggle-btn" type="button" onclick="toggleCardBody(this)">
 													<i class="fa fa-chevron-up"></i></button
 											></span>
 										</h6>
-										<p>Campos obrigatórios assinalados com (*)</p>
+										<p><span class="badge badge-danger mt-2">Sem acesso</span></p>
 									</div>
+								</div>
+								<div class="alert alert-light-danger light alert-dismissible fade show text-dark border-left-wrapper mb-0" role="alert">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										class="feather feather-help-circle"
+									>
+										<circle cx="12" cy="12" r="10"></circle>
+										<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+										<line x1="12" y1="17" x2="12" y2="17"></line>
+									</svg>
+									<p>Existem incoerências nos dados inseridos:</p>
+									<span class="badge badge-dark tag-pills-sm-mb">Utilizador já em uso</span>c:\Users\ruicosta\Desktop\admin\template\bookmark.html
+									<span class="badge badge-dark tag-pills-sm-mb">E-mail inválido</span>
+									<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
 								</div>
 							</div>
 							<div class="card-body active">
@@ -366,8 +389,8 @@
 									<div class="row">
 										<div class="col-xl-8 col-sm-12">
 											<div class="row mb-3">
-												<div class="col-6 col-md-6 col-xl-2" style="padding-right: 0px;">
-													<div class="card-wrapper border rounded-3 light-card" style="height: 100%;">
+												<div class="col-6 col-md-6 col-xl-2" style="padding-right: 0px">
+													<div class="card-wrapper border rounded-3 light-card" style="height: 100%">
 														<div>
 															<div class="form-check radio radio-primary">
 																<input class="form-check-input" id="shipping-choose1" type="radio" name="radio3" value="option1" />
@@ -384,8 +407,8 @@
 																<label class="form-check-label mb-0 f-w-500" for="shipping-choose2">Cliente Oficina</label>
 															</div>
 															<div class="row">
-																<div class="col-3" style="padding-right: 0;">
-																	<input class="form-control" id="placeholderidcliente" type="number" required="" placeholder="Id..." style="padding-right: 0;"/>
+																<div class="col-3" style="padding-right: 0">
+																	<input class="form-control" id="placeholderidcliente" type="number" required="" placeholder="Id..." style="padding-right: 0" />
 																</div>
 																<div class="col-9">
 																	<input class="form-control" id="placeholdername" type="text" required="" placeholder="Escreva o nome de cliente..." />
@@ -447,6 +470,10 @@
 														<option>...</option>
 														<option>...</option>
 													</select>
+												</div>
+												<div class="col-sm-12">
+													<label for="inputPassword7">Obs. Internas</label>
+													<textarea class="form-control btn-square" id="exampleFormControlTextarea14" rows="3"></textarea>
 												</div>
 											</div>
 										</div>
