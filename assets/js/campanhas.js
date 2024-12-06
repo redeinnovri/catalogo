@@ -107,12 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
 			.filter(c => c.Destaque === 1)
 			.forEach(campanha => {
 				const estadoCampanha = calcularEstado(campanha.DataInicio, campanha.DataFim);
-				let badgeClass = 'badge-primary'; // Padrão para Ativa
+				if (estadoCampanha === 'Expirada') {
+					return; // Ignora campanhas expiradas
+				}
 
+				let badgeClass = 'badge-primary'; // Padrão para Ativa
 				if (estadoCampanha === 'Brevemente') {
 					badgeClass = 'badge-warning';
-				} else if (estadoCampanha === 'Expirada') {
-					badgeClass = 'badge-secondary'; // Caso deseje uma cor para Expirada (opcional)
 				}
 
 				destaquesContainer.innerHTML += `
