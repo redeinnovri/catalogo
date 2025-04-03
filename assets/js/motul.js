@@ -209,6 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	function displayGroupedProducts(products) {
 		productGrid.innerHTML = '';
 
+		products.sort((a, b) => b.IdArtigo - a.IdArtigo);
+
 		// Agrupar produtos por DesignacaoComercial
 		const groupedProducts = groupBy(products, 'DesignacaoComercial');
 

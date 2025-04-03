@@ -311,6 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	function displayGroupedProducts(products) {
 		productGrid.innerHTML = '';
 
+		products.sort((a, b) => b.IdArtigo - a.IdArtigo);
 		// Agrupar produtos por DesignacaoComercial
 		const groupedProducts = groupBy(products, 'Referencia');
 
@@ -325,10 +326,10 @@ document.addEventListener('DOMContentLoaded', () => {
 				productCard.className = 'col-xl-3 col-sm-6';
 
 				// Verifica se existe uma DesignacaoComercialSubstituta
-				const substitutoAlert = product.DesignacaoComercialSubstituta
+				const substitutoAlert = product.RefSubstituta
 					? `<div class="alert border-warning p-0" role="alert" style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0; border-radius: 0px 0px 0.55rem 0px;">
                       <div class="bg-warning" style="padding: 1.6rem 1rem;"><i class="icon-exchange-vertical text-dark"></i></div>
-                      <p>Substituído por: <strong class="txt-dark designacao-comercial-substituta" style="cursor: pointer;">${product.DesignacaoComercialSubstituta}</strong></p>
+                      <p>Substituído por: <strong class="txt-dark designacao-comercial-substituta" style="cursor: pointer;">${product.RefSubstituta}</strong></p>
                    </div>`
 					: `<div class="alert p-0" style="visibility: hidden;"><p>&nbsp;</p></div>`;
 
@@ -382,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (product.DesignacaoComercialSubstituta) {
 					const substitutaElement = productCard.querySelector('.designacao-comercial-substituta');
 					substitutaElement.addEventListener('click', () => {
-						copyToClipboard(product.DesignacaoComercialSubstituta);
+						copyToClipboard(product.RefSubstituta);
 					});
 				}
 			}
